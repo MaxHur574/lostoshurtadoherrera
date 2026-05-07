@@ -5,7 +5,7 @@
 
 - Objetivo: Definir qué pasó en ese sistema operativo antes de programar.
 ### Tareas
-- [ x] Escritura del Lore: Redactar el hilo conductor. Por ejemplo:¿Quién era el dueño? ¿Qué ocultaba? ¿Qué lo mató/hizo desaparecer?
+- [x] Escritura del Lore: Redactar el hilo conductor. Por ejemplo:¿Quién era el dueño? ¿Qué ocultaba? ¿Qué lo mató/hizo desaparecer?
 
 - [ ] Mapa de Puzzles: Diseñar el flujo de información.
   - Ejemplo: El archivo A contiene la pista para la carpeta B, que contiene el correo C.
