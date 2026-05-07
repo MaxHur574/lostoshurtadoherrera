@@ -7,7 +7,7 @@
 ### Tareas
 - [ ] Escritura del Lore: Redactar el hilo conductor. Por ejemplo:¿Quién era el dueño? ¿Qué ocultaba? ¿Qué lo mató/hizo desaparecer?
 
--[ ] Mapa de Puzzles: Diseñar el flujo de información.
+- [ ] Mapa de Puzzles: Diseñar el flujo de información.
   - Ejemplo: El archivo A contiene la pista para la carpeta B, que contiene el correo C.
 
 - [ ] Interfaz Base: Crear el esqueleto HTML/CSS (Escritorio y ventanas básicas).
