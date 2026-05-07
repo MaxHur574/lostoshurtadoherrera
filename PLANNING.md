@@ -1,14 +1,16 @@
-Cronograma Ajustado: Prioridad Narrativa
-Semana 1: Arquitectura y "Script" del Juego (04 May - 10 May)
-Objetivo: Definir qué pasó en ese sistema operativo antes de programar.
+# Cronograma Ajustado: Prioridad Narrativa
+---
 
-Escritura del Lore: Redactar el hilo conductor. Por ejemplo:¿Quién era el dueño? ¿Qué ocultaba? ¿Qué lo mató/hizo desaparecer?
+## Semana 1: Arquitectura y "Script" del Juego (04 May - 10 May)
 
-Mapa de Puzzles: Diseñar el flujo de información.
+- Objetivo: Definir qué pasó en ese sistema operativo antes de programar.
+### Tareas
+- [ ] Escritura del Lore: Redactar el hilo conductor. Por ejemplo:¿Quién era el dueño? ¿Qué ocultaba? ¿Qué lo mató/hizo desaparecer?
 
-Ejemplo: El archivo A contiene la pista para la carpeta B, que contiene el correo C.
+-[ ] Mapa de Puzzles: Diseñar el flujo de información.
+  - Ejemplo: El archivo A contiene la pista para la carpeta B, que contiene el correo C.
 
-Interfaz Base: Crear el esqueleto HTML/CSS (Escritorio y ventanas básicas).
+- [ ] Interfaz Base: Crear el esqueleto HTML/CSS (Escritorio y ventanas básicas).
 
 Hito: Tener un documento con todos los textos (correos, notas) y el diagrama de flujo del juego.
 
