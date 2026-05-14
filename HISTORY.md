@@ -1,6 +1,7 @@
-Historia
+# Historia
+---
 
-INTRODUCCIÓN (Texto inicial en pantalla)
+## INTRODUCCIÓN (Texto inicial en pantalla)
 Hace tres días recibiste un correo electrónico sin asunto. El remitente era una cadena de números y letras sin sentido. No había cuerpo de texto, solo un enlace a un repositorio privado titulado: 'PROYECTO_VALERIA_FINAL'.
 
 Pensaste que era un error de envío.. El repositorio contenía un solo archivo ejecutable de gran tamaño. Lo descargaste por curiosidad. Al abrirlo, no apareció ningún instalador. Tu monitor se llenó de líneas de código y el sistema operativo de tu PC fue secuestrado y reemplazado en segundos.
@@ -56,9 +57,9 @@ Escuchas un sonido que no viene de los altavoces: el "click" electrónico de la 
 ADMINISTRADOR: "No intentes apagar la PC. Mi público odia que se caiga el streaming justo cuando empieza la acción."
 
 Escuchas pasos pesados en el pasillo de tu casa. El cursor de tu ratón se mueve solo hacia el centro de la pantalla y hace clic en "Iniciar Transmisión".
+---
 
-
-Flujo del juego
+# Flujo del juego
 
 Nivel 1: Presencias Extrañas (La Desorientación)
 El jugador encuentra rastros de que algo "humano" está atrapado o escondido en la máquina. Los fragmentos son inquietantes pero no tienen sentido todavía.
