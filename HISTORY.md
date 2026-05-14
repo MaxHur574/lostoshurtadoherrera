@@ -57,6 +57,7 @@ Escuchas un sonido que no viene de los altavoces: el "click" electrónico de la 
 ADMINISTRADOR: "No intentes apagar la PC. Mi público odia que se caiga el streaming justo cuando empieza la acción."
 
 Escuchas pasos pesados en el pasillo de tu casa. El cursor de tu ratón se mueve solo hacia el centro de la pantalla y hace clic en "Iniciar Transmisión".
+
 ---
 
 # Flujo del juego

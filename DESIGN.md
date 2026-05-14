@@ -4,6 +4,7 @@
 Especificaciones de tecnologia
 
 Framework: Vue.js 3. Framework elegido entre 3 opciones disponibles porque es el que tenemos más experiencia manejando.
+
 ---
 
 ## Estructura de carpetas propuesta
@@ -25,6 +26,7 @@ LostOs_proyect/
 ├── DESIGN.md
 ├── PLANNING.md
 └── README.md
+
 ---
 
 ## Dependencias principales
@@ -33,11 +35,13 @@ Pinia: Es la biblioteca oficial para gestionar estado de Vue. Pinia tine una est
 GSAP: Sirve para poder hacer las animaciones como gliych u otras, con la ventaja de que nos deja realizar Timelines.
 Interact: Permite el Drag y Drop, resize, ya que algunas librerias como Draggable y Sortable no permiten el Drag y Drop (Mover libremente una ventana) y para el tipo de juego que queremos hacer Interact nos da más funciones para más realismo.
 Howler.js: Funciona igual en todos los navegadores, verbosidad más ligera, arquitectura más sencilla de utilizar. Ideal para juegos 2D.
+
 ---
 
 ## Descripción del Juego
 
 LOST OS es un juego de horror y misterio ambientado en un sistema operativo abandonado. El jugador "accede" a un escritorio oscuro y debe descubrir qué ocurrió explorando archivos, correos electrónicos y aplicaciones del sistema. La atmósfera es paranoica y glitchy: alertas aparecen solas, la cámara se enciende sin razón y los mensajes son perturbadores.
+
 ---
 
 ## Mecanicas principales 
@@ -48,6 +52,7 @@ Lee correos de remitentes desconocidos en el Cliente de correo, que también req
 Desencripta un archivo oculto ingresando un código de 4 dígitos. Las contraseñas se van obteniendo resolviendo distintos minijuegos que irán subiendo la dificultad en el transcurso del juego. Se tienen 3 intentos por minijuego, al momento de perder los 3 intentos sale un screamer y se reinicia el minijuego luego de 30 segundos de espera.
 Recibe alertas automáticas que aparecen en pantalla con efecto glitch, informando actividad sospechosa.
 Accede a un Navegador sin conexión que muestra contenido perturbador.
+
 ---
 
 ## Reglas y flujo de juego
