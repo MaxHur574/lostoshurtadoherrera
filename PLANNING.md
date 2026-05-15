@@ -17,11 +17,11 @@
 ## Semana 2: Implementación del Sistema de Archivos (11 May - 17 May)
 - Objetivo: Volcar la historia al código.
 
-- [ ] Archivos de Datos: Crear los archivos que contengan las partes del lore escrito en la Semana 1 (nombres de archivos, fechas de creación, contenido de los .txt).
+- [x] Archivos de Datos: Crear los archivos que contengan las partes del lore escrito en la Semana 1 (nombres de archivos, fechas de creación, contenido de los .txt).
 
-- [ ] Lógica de Navegación: Programar las aplicaciones que permitirán la navegacion del So del juego.
+- [x] Lógica de Navegación: Programar las aplicaciones que permitirán la navegacion del So del juego.
 
-- [ ] Bloqueos Narrativos: Implementar las contraseñas basadas en el lore (ej: la contraseña es el nombre de la mascota mencionado en un post-it digital).
+- [x] Bloqueos Narrativos: Implementar las contraseñas basadas en el lore (ej: la contraseña es el nombre de la mascota mencionado en un post-it digital).
 
 
 ## Semana 3: Atmósfera y Eventos Dinámicos (18 May - 24 May)
