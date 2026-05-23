@@ -1,12 +1,20 @@
 <script setup>
+// App.vue — Componente raíz
+// ─────────────────────────────────────────────────────────────────────────────
+// AtmosphereEngine se monta UNA vez aquí, por encima de todo, para que sus
+// efectos visuales afecten a toda la pantalla y no queden encapsulados dentro
+// de ninguna ventana.
+// ─────────────────────────────────────────────────────────────────────────────
+
 import { ref } from 'vue';
-import Taskbar from './components/Taskbar.vue';
-import Explorer from './components/Explorer.vue';
-import Mail from './components/Mail.vue';
-import Browser from './components/Browser.vue';
-import Chat from './components/Chat.vue';
-import Gallery from './components/Gallery.vue';
-import { useSystem } from './store/system.js';
+import Taskbar          from './components/Taskbar.vue';
+import Explorer         from './components/Explorer.vue';
+import Mail             from './components/Mail.vue';
+import Browser          from './components/Browser.vue';
+import Chat             from './components/Chat.vue';
+import Gallery          from './components/Gallery.vue';
+
+import { useSystem }    from './store/system.js';
 
 const system = useSystem();
 
@@ -32,7 +40,13 @@ const appMeta = {
   gallery:  { label: 'Galería',    icon: '🖼️' },
 };
 
-const showMap = { explorer: showExplorer, mail: showMail, browser: showBrowser, chat: showChat, gallery: showGallery };
+const showMap = {
+  explorer: showExplorer,
+  mail:     showMail,
+  browser:  showBrowser,
+  chat:     showChat,
+  gallery:  showGallery,
+};
 
 function openApp(id) {
   const meta = appMeta[id];
@@ -48,6 +62,10 @@ function closeApp(id) {
 
 <template>
   <div class="os-container">
+
+    <!-- Motor de atmósfera: invisible, escucha la cola de eventos -->
+    <AtmosphereEngine />
+
     <div class="desktop">
       <div class="desktop-icons">
         <div
@@ -79,7 +97,13 @@ function closeApp(id) {
 </template>
 
 <style>
-body, html { margin: 0; padding: 0; overflow: hidden; background: #1a1a1a; }
+body, html {
+  margin: 0; padding: 0;
+  overflow: hidden;
+  background: #0a0a0a;
+  /* Transición de brillo global para el efecto flicker */
+  transition: filter 0.05s ease;
+}
 .os-container { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
 .desktop { flex: 1; position: relative; overflow: hidden; }
 </style>
@@ -87,13 +111,13 @@ body, html { margin: 0; padding: 0; overflow: hidden; background: #1a1a1a; }
 <style scoped>
 .desktop-icons {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 12px; left: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   z-index: 1;
 }
+
 .desktop-icon {
   display: flex;
   flex-direction: column;
@@ -106,10 +130,15 @@ body, html { margin: 0; padding: 0; overflow: hidden; background: #1a1a1a; }
   user-select: none;
   transition: background 0.15s;
 }
-.desktop-icon:hover  { background: rgba(255,255,255,0.08); }
-.desktop-icon:active { background: rgba(74,158,255,0.25); }
-.desktop-icon-img    { font-size: 32px; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
-.desktop-icon-label  {
+.desktop-icon:hover  { background: rgba(255,255,255,0.07); }
+.desktop-icon:active { background: rgba(74,158,255,0.2); }
+
+.desktop-icon-img {
+  font-size: 32px; line-height: 1;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
+}
+
+.desktop-icon-label {
   font-size: 11px; color: #ddd;
   font-family: 'Segoe UI', sans-serif;
   text-align: center;
