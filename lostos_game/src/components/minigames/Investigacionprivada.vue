@@ -53,7 +53,7 @@
         @win="onWin('Pista_2')"
       />
       <RecoveryMinigame
-        v-if="activeGame === 'nPista_3'"
+        v-if="activeGame === 'Pista_3'"
         @close="activeGame = null"
         @win="onWin('Pista_3')"
       />

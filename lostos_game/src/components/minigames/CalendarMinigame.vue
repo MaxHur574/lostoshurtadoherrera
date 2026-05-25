@@ -7,7 +7,7 @@
       </div>
       <div class="mg-body">
         <p class="hint">Haz clic en los meses en orden cronológico.</p>
-        <p class="progress">Progreso: {{ done }} / {{ meses.length }}</p>
+        <p class="progress">Progreso: {{ done }} / 12</p>
         <div class="meses-grid">
           <button
             v-for="m in meses"
@@ -35,8 +35,11 @@ import { ref, computed } from 'vue';
 const emit = defineEmits(['close', 'win']);
 const won  = ref(false);
 
-const ORDEN = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-               'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const ORDEN = [
+  'Enero', 'Febrero', 'Marzo', 'Abril',
+  'Mayo', 'Junio', 'Julio', 'Agosto',
+  'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+];
 
 function shuffle(arr) {
   const a = [...arr];
@@ -47,21 +50,17 @@ function shuffle(arr) {
   return a;
 }
 
-// Usamos solo 6 meses para que no sea eterno
-const seleccion = shuffle(ORDEN).slice(0, 6).sort(() => 0); // tomar 6 al azar
-const ordenados = [...seleccion].sort((a, b) => ORDEN.indexOf(a) - ORDEN.indexOf(b));
-
-const meses = ref(shuffle(seleccion).map(name => ({ name, done: false, wrong: false })));
-const nextIdx = ref(0); // índice en `ordenados` que toca ahora
+const meses   = ref(shuffle(ORDEN).map(name => ({ name, done: false, wrong: false })));
+const nextIdx = ref(0);
 
 const done = computed(() => meses.value.filter(m => m.done).length);
 
 function click(m) {
   if (won.value || m.done) return;
-  if (m.name === ordenados[nextIdx.value]) {
+  if (m.name === ORDEN[nextIdx.value]) {
     m.done = true;
     nextIdx.value++;
-    if (nextIdx.value === ordenados.length) {
+    if (nextIdx.value === ORDEN.length) {
       won.value = true;
       setTimeout(() => { emit('win'); emit('close'); }, 1000);
     }
@@ -81,7 +80,7 @@ function click(m) {
 }
 .mg-box {
   background: #111; border: 1px solid #333;
-  border-radius: 6px; width: 360px;
+  border-radius: 6px; width: 420px;
   box-shadow: 0 0 40px rgba(0,0,0,.9);
 }
 .mg-header {
@@ -97,7 +96,7 @@ function click(m) {
 .meses-grid { display: flex; flex-wrap: wrap; gap: 8px; }
 .mes-btn {
   background: #1a1a1a; border: 1px solid #2a2a2a;
-  color: #888; padding: 8px 14px;
+  color: #888; padding: 8px 12px;
   border-radius: 4px; cursor: pointer;
   font-size: 12px; font-family: 'Segoe UI', sans-serif;
   transition: all .15s;
