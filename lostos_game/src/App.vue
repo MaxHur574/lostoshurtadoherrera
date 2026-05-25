@@ -11,7 +11,7 @@ import Taskbar          from './components/Taskbar.vue';
 import Explorer         from './components/Explorer.vue';
 import Mail             from './components/Mail.vue';
 import Browser          from './components/Browser.vue';
-import Chat             from './components/Chat.vue';
+import Notes            from './components/Notes.vue';
 import Gallery          from './components/Gallery.vue';
 
 import { useSystem }    from './store/system.js';
@@ -21,14 +21,14 @@ const system = useSystem();
 const showExplorer = ref(false);
 const showMail     = ref(false);
 const showBrowser  = ref(false);
-const showChat     = ref(false);
+const showNotes = ref(false);
 const showGallery  = ref(false);
 
 const desktopIcons = [
   { id: 'explorer', label: 'Mis archivos', icon: '📁' },
   { id: 'mail',     label: 'Correo',       icon: '📧' },
   { id: 'browser',  label: 'Navegador',    icon: '🌐' },
-  { id: 'chat',     label: 'Mensajes',     icon: '💬' },
+  { id: 'notes', label: 'Notas', icon: '📝' },
   { id: 'gallery',  label: 'Galería',      icon: '🖼️' },
 ];
 
@@ -36,7 +36,7 @@ const appMeta = {
   explorer: { label: 'Explorador', icon: '📁' },
   mail:     { label: 'Correo',     icon: '📧' },
   browser:  { label: 'Navegador',  icon: '🌐' },
-  chat:     { label: 'Mensajes',   icon: '💬' },
+  notes: { label: 'Notas', icon: '📝' },
   gallery:  { label: 'Galería',    icon: '🖼️' },
 };
 
@@ -44,7 +44,7 @@ const showMap = {
   explorer: showExplorer,
   mail:     showMail,
   browser:  showBrowser,
-  chat:     showChat,
+  notes: showNotes,
   gallery:  showGallery,
 };
 
@@ -82,7 +82,7 @@ function closeApp(id) {
       <Explorer v-if="showExplorer" @close="closeApp('explorer')" @minimize="showExplorer = false" />
       <Mail     v-if="showMail"     @close="closeApp('mail')"     @minimize="showMail = false" />
       <Browser  v-if="showBrowser"  @close="closeApp('browser')"  @minimize="showBrowser = false" />
-      <Chat     v-if="showChat"     @close="closeApp('chat')"     @minimize="showChat = false" />
+      <Notes v-if="showNotes" @close="closeApp('notes')" @minimize="showNotes = false" />
       <Gallery  v-if="showGallery"  @close="closeApp('gallery')"  @minimize="showGallery = false" />
     </div>
 
@@ -90,7 +90,7 @@ function closeApp(id) {
       @open-explorer="openApp('explorer')"
       @open-mail="openApp('mail')"
       @open-browser="openApp('browser')"
-      @open-chat="openApp('chat')"
+      @open-notes="openApp('notes')"
       @open-gallery="openApp('gallery')"
     />
   </div>
