@@ -89,8 +89,7 @@ Nunca se olvida.`,
         date: '08/05/2024',
         body:
 `Nunca volver tarde.
-Cerrar habitación 104.
-Usar siempre la misma clave: Luna + 104`,
+Cerrar habitación 104.`,
       },
     ],
   },
