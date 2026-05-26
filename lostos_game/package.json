@@ -6,26 +6,29 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
   },
   "dependencies": {
     "gsap": "^3.15.0",
     "interact": "^0.0.3",
     "interactjs": "^1.10.27",
     "pinia": "^3.0.4",
-    "vitest": "^4.1.7",
     "vue": "^3.5.32"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/test-utils": "^2.4.6",
     "eslint": "^10.4.0",
     "eslint-plugin-vue": "^10.9.1",
     "globals": "^17.6.0",
+    "jsdom": "^26.1.0",
     "prettier": "^3.8.3",
     "vite": "^8.0.8",
-    "vite-plugin-vue-devtools": "^8.1.1"
+    "vite-plugin-vue-devtools": "^8.1.1",
+    "vitest": "^4.1.7"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
