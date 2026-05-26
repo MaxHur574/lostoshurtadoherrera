@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
-import { useMinigames } from "../src/store/minigames.js";
+import { useMinigames } from "../store/minigames.js";  
 
 describe("useMinigames — store de minijuegos", () => {
   beforeEach(() => {

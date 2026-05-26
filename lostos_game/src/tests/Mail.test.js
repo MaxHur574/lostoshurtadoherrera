@@ -1,10 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createPinia } from "pinia";
-import Mail from "../src/components/Mail.vue";
-
+import Mail from "../components/Mail.vue";  
 // Mock de Window.vue para aislar el componente
-vi.mock("../src/components/Window.vue", () => ({
+vi.mock("../components/Window.vue", () => ({
   default: {
     name: "Window",
     template: "<div><slot /></div>",
