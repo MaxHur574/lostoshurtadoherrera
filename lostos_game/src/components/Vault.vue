@@ -15,7 +15,7 @@
               <input
                 v-for="(_, i) in 4"
                 :key="i"
-                :ref="el => pinRefs[i] = el"
+                :ref="(el) => (pinRefs[i] = el)"
                 v-model="pin[i]"
                 class="pin-digit"
                 maxlength="1"
@@ -25,7 +25,11 @@
                 @keydown.backspace="onPinBackspace(i)"
               />
             </div>
-            <button class="vault-submit" @click="tryUnlock" :disabled="pin.some(p => !p)">
+            <button
+              class="vault-submit"
+              @click="tryUnlock"
+              :disabled="pin.some((p) => !p)"
+            >
               ACCEDER
             </button>
             <div v-if="showError" class="vault-error">
@@ -45,11 +49,14 @@
       <template v-else-if="!twistStarted">
         <div class="vault-open">
           <div class="vault-toolbar">
-            <span class="toolbar-path">// bóveda_principal / IDENTIDAD_CREADOR /</span>
+            <span class="toolbar-path"
+              >// bóveda_principal / IDENTIDAD_CREADOR /</span
+            >
             <span class="toolbar-badge access">✓ Acceso concedido</span>
           </div>
           <div class="vault-files">
-            <div class="vault-file-item"
+            <div
+              class="vault-file-item"
               v-for="f in vaultFiles"
               :key="f.name"
               :class="{ loading: f.loading, selected: selectedFile === f.name }"
@@ -61,7 +68,9 @@
                 <div class="vf-name">{{ f.name }}</div>
                 <div class="vf-size">{{ f.size }}</div>
               </div>
-              <span class="vf-status" :class="f.statusClass">{{ f.status }}</span>
+              <span class="vf-status" :class="f.statusClass">{{
+                f.status
+              }}</span>
             </div>
           </div>
           <div class="vault-statusbar">
@@ -73,10 +82,20 @@
       <template v-else>
         <div class="vault-twist">
           <div class="twist-terminal">
-            <div class="terminal-line" v-for="(line, i) in twistLines" :key="i" :class="line.type">
+            <div
+              class="terminal-line"
+              v-for="(line, i) in twistLines"
+              :key="i"
+              :class="line.type"
+            >
               {{ line.text }}
             </div>
-            <div class="terminal-cursor" v-if="twistLines.length < allTwistLines.length">_</div>
+            <div
+              class="terminal-cursor"
+              v-if="twistLines.length < allTwistLines.length"
+            >
+              _
+            </div>
           </div>
         </div>
       </template>
@@ -103,7 +122,7 @@
             <input
               v-for="(_, i) in 4"
               :key="i"
-              :ref="el => pinRefs[i] = el"
+              :ref="(el) => (pinRefs[i] = el)"
               v-model="pin[i]"
               class="pin-digit"
               maxlength="1"
@@ -113,7 +132,11 @@
               @keydown.backspace="onPinBackspace(i)"
             />
           </div>
-          <button class="vault-submit" @click="tryUnlock" :disabled="pin.some(p => !p)">
+          <button
+            class="vault-submit"
+            @click="tryUnlock"
+            :disabled="pin.some((p) => !p)"
+          >
             ACCEDER
           </button>
           <div v-if="showError" class="vault-error">
@@ -131,11 +154,14 @@
 
       <div v-else-if="!twistStarted" class="vault-open">
         <div class="vault-toolbar">
-          <span class="toolbar-path">// bóveda_principal / IDENTIDAD_CREADOR /</span>
+          <span class="toolbar-path"
+            >// bóveda_principal / IDENTIDAD_CREADOR /</span
+          >
           <span class="toolbar-badge access">✓ Acceso concedido</span>
         </div>
         <div class="vault-files">
-          <div class="vault-file-item"
+          <div
+            class="vault-file-item"
             v-for="f in vaultFiles"
             :key="f.name"
             :class="{ loading: f.loading, selected: selectedFile === f.name }"
@@ -157,10 +183,20 @@
 
       <div v-else class="vault-twist">
         <div class="twist-terminal">
-          <div class="terminal-line" v-for="(line, i) in twistLines" :key="i" :class="line.type">
+          <div
+            class="terminal-line"
+            v-for="(line, i) in twistLines"
+            :key="i"
+            :class="line.type"
+          >
             {{ line.text }}
           </div>
-          <div class="terminal-cursor" v-if="twistLines.length < allTwistLines.length">_</div>
+          <div
+            class="terminal-cursor"
+            v-if="twistLines.length < allTwistLines.length"
+          >
+            _
+          </div>
         </div>
       </div>
     </div>
@@ -196,34 +232,67 @@ const hintVisible = ref(false);
 const SECRET_PIN = ["1", "4", "1", "0"];
 
 const now = new Date();
-const timeStr = now.toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" });
+const timeStr = now.toLocaleTimeString("es-CL", {
+  hour: "2-digit",
+  minute: "2-digit",
+});
 
 const vaultFiles = ref([
-  { name: "IDENTIDAD_CREADOR.jpg", icon: "🖼️", size: "2.1 MB", status: "CIFRADO", statusClass: "status-enc", loading: false },
-  { name: "lista_compradores.db",  icon: "📋", size: "847 KB", status: "CIFRADO", statusClass: "status-enc", loading: false },
-  { name: "log_transmisiones.txt", icon: "📄", size: "12.4 MB", status: "CIFRADO", statusClass: "status-enc", loading: false },
+  {
+    name: "IDENTIDAD_CREADOR.jpg",
+    icon: "🖼️",
+    size: "2.1 MB",
+    status: "CIFRADO",
+    statusClass: "status-enc",
+    loading: false,
+  },
+  {
+    name: "lista_compradores.db",
+    icon: "📋",
+    size: "847 KB",
+    status: "CIFRADO",
+    statusClass: "status-enc",
+    loading: false,
+  },
+  {
+    name: "log_transmisiones.txt",
+    icon: "📄",
+    size: "12.4 MB",
+    status: "CIFRADO",
+    statusClass: "status-enc",
+    loading: false,
+  },
 ]);
 
 const allTwistLines = [
-  { text: `> abriendo IDENTIDAD_CREADOR.jpg...`,            type: "ok" },
-  { text: `> descifrando imagen...`,                        type: "ok" },
-  { text: `> cargando datos...`,                            type: "ok" },
-  { text: ``,                                               type: "ok" },
-  { text: `[ERROR] el archivo no contiene una imagen.`,     type: "err" },
+  { text: `> abriendo IDENTIDAD_CREADOR.jpg...`, type: "ok" },
+  { text: `> descifrando imagen...`, type: "ok" },
+  { text: `> cargando datos...`, type: "ok" },
+  { text: ``, type: "ok" },
+  { text: `[ERROR] el archivo no contiene una imagen.`, type: "err" },
   { text: `[INFO] redirigiendo a: historial_actividad.log`, type: "warn" },
-  { text: ``,                                               type: "ok" },
-  { text: `═══════════════════════════════════════════`,     type: "dim" },
-  { text: `  HISTORIAL DE ACTIVIDAD — SESIÓN ACTUAL`,        type: "title" },
-  { text: `═══════════════════════════════════════════`,     type: "dim" },
-  { text: ``,                                               type: "ok" },
-  { text: `[${timeStr}] Usuario inició sesión en PROYECTO_VALERIA_FINAL.`,  type: "log" },
-  { text: `[${timeStr}] Usuario abrió "Chat de Valeria".`,                  type: "log" },
-  { text: `[${timeStr}] Usuario accedió a "Galería — Recortes de prensa".`, type: "log" },
-  { text: `[${timeStr}] PIN 1410 introducido. Acceso total concedido.`,     type: "log" },
-  { text: ``,                                               type: "ok" },
-  { text: `[SISTEMA] Rastreo de ubicación: COMPLETADO.`,    type: "err" },
-  { text: `[SISTEMA] Puerta de enlace: ABIERTA.`,           type: "err" },
-  { text: `[SISTEMA] Transmisión iniciada.`,                type: "err" },
+  { text: ``, type: "ok" },
+  { text: `═══════════════════════════════════════════`, type: "dim" },
+  { text: `  HISTORIAL DE ACTIVIDAD — SESIÓN ACTUAL`, type: "title" },
+  { text: `═══════════════════════════════════════════`, type: "dim" },
+  { text: ``, type: "ok" },
+  {
+    text: `[${timeStr}] Usuario inició sesión en PROYECTO_VALERIA_FINAL.`,
+    type: "log",
+  },
+  { text: `[${timeStr}] Usuario abrió "Chat de Valeria".`, type: "log" },
+  {
+    text: `[${timeStr}] Usuario accedió a "Galería — Recortes de prensa".`,
+    type: "log",
+  },
+  {
+    text: `[${timeStr}] PIN 1410 introducido. Acceso total concedido.`,
+    type: "log",
+  },
+  { text: ``, type: "ok" },
+  { text: `[SISTEMA] Rastreo de ubicación: COMPLETADO.`, type: "err" },
+  { text: `[SISTEMA] Puerta de enlace: ABIERTA.`, type: "err" },
+  { text: `[SISTEMA] Transmisión iniciada.`, type: "err" },
 ];
 
 function onPinInput(i) {
@@ -304,7 +373,7 @@ onMounted(() => {
 .vault-app {
   display: flex;
   flex-direction: column;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   background: #080808;
   height: 460px;
 }
@@ -326,7 +395,9 @@ onMounted(() => {
   padding: 24px;
 }
 
-.vault-logo { text-align: center; }
+.vault-logo {
+  text-align: center;
+}
 
 .vault-hex {
   font-size: 40px;
@@ -336,8 +407,17 @@ onMounted(() => {
 }
 
 @keyframes hex-pulse {
-  0%,100% { opacity: 1; text-shadow: 0 0 20px #cc3333, 0 0 40px #cc3333; }
-  50%      { opacity: 0.6; text-shadow: 0 0 8px #cc3333; }
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow:
+      0 0 20px #cc3333,
+      0 0 40px #cc3333;
+  }
+  50% {
+    opacity: 0.6;
+    text-shadow: 0 0 8px #cc3333;
+  }
 }
 
 .vault-title {
@@ -348,7 +428,9 @@ onMounted(() => {
   margin-top: 4px;
 }
 
-.vault-os { color: #cc3333; }
+.vault-os {
+  color: #cc3333;
+}
 
 .vault-sub {
   font-size: 10px;
@@ -385,14 +467,16 @@ onMounted(() => {
   font-size: 22px;
   text-align: center;
   outline: none;
-  font-family: 'Courier New', monospace;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: "Courier New", monospace;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   caret-color: transparent;
 }
 
 .pin-digit:focus {
   border-color: #cc3333;
-  box-shadow: 0 0 10px rgba(204,51,51,0.2);
+  box-shadow: 0 0 10px rgba(204, 51, 51, 0.2);
 }
 
 .pin-digit.error {
@@ -401,9 +485,16 @@ onMounted(() => {
 }
 
 @keyframes shake {
-  0%,100% { transform: translateX(0); }
-  25%      { transform: translateX(-5px); }
-  75%      { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 .vault-submit {
@@ -411,11 +502,14 @@ onMounted(() => {
   border: 1px solid #441111;
   color: #cc3333;
   padding: 10px 32px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 12px;
   letter-spacing: 3px;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
   border-radius: 4px;
   margin-top: 4px;
 }
@@ -423,10 +517,13 @@ onMounted(() => {
 .vault-submit:hover:not(:disabled) {
   background: #1a0000;
   border-color: #cc3333;
-  box-shadow: 0 0 14px rgba(204,51,51,0.2);
+  box-shadow: 0 0 14px rgba(204, 51, 51, 0.2);
 }
 
-.vault-submit:disabled { opacity: 0.3; cursor: not-allowed; }
+.vault-submit:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
 
 .vault-error {
   font-size: 11px;
@@ -442,9 +539,16 @@ onMounted(() => {
 }
 
 @keyframes glitch {
-  0%,100% { transform: translate(0); }
-  25%      { transform: translate(-2px,1px); }
-  75%      { transform: translate(2px,-1px); }
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(-2px, 1px);
+  }
+  75% {
+    transform: translate(2px, -1px);
+  }
 }
 
 .vault-hint {
@@ -456,8 +560,17 @@ onMounted(() => {
   animation: fadeIn 0.4s ease;
 }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.hint-icon { font-size: 14px; }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.hint-icon {
+  font-size: 14px;
+}
 
 /* ─── ABIERTO ─── */
 .vault-open {
@@ -477,7 +590,10 @@ onMounted(() => {
   flex-shrink: 0;
 }
 
-.toolbar-path { font-size: 11px; color: #444; }
+.toolbar-path {
+  font-size: 11px;
+  color: #444;
+}
 
 .toolbar-badge {
   font-size: 10px;
@@ -486,7 +602,11 @@ onMounted(() => {
   letter-spacing: 0.5px;
 }
 
-.access { background: #001a00; color: #00cc44; border: 1px solid #004400; }
+.access {
+  background: #001a00;
+  color: #00cc44;
+  border: 1px solid #004400;
+}
 
 .vault-files {
   flex: 1;
@@ -506,19 +626,48 @@ onMounted(() => {
   border: 1px solid #1a1a1a;
   border-radius: 4px;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
 
-.vault-file-item:hover { background: #111; border-color: #333; }
-.vault-file-item.selected { background: #0d1a0d; border-color: #cc3333; }
+.vault-file-item:hover {
+  background: #111;
+  border-color: #333;
+}
+.vault-file-item.selected {
+  background: #0d1a0d;
+  border-color: #cc3333;
+}
 
-.vf-icon  { font-size: 22px; flex-shrink: 0; }
-.vf-info  { flex: 1; }
-.vf-name  { font-size: 13px; color: #ccc; }
-.vf-size  { font-size: 10px; color: #444; margin-top: 2px; }
+.vf-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.vf-info {
+  flex: 1;
+}
+.vf-name {
+  font-size: 13px;
+  color: #ccc;
+}
+.vf-size {
+  font-size: 10px;
+  color: #444;
+  margin-top: 2px;
+}
 
-.vf-status { font-size: 10px; padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
-.status-enc { background: #1a0a00; color: #aa4400; border: 1px solid #440000; }
+.vf-status {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.status-enc {
+  background: #1a0a00;
+  color: #aa4400;
+  border: 1px solid #440000;
+}
 
 .vault-statusbar {
   padding: 5px 14px;
@@ -554,16 +703,36 @@ onMounted(() => {
 }
 
 @keyframes lineSlide {
-  from { opacity: 0; transform: translateX(-6px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.terminal-line.ok    { color: #336633; }
-.terminal-line.warn  { color: #aa7700; }
-.terminal-line.err   { color: #cc3333; }
-.terminal-line.dim   { color: #1e1e1e; }
-.terminal-line.title { color: #888; font-weight: bold; letter-spacing: 1px; }
-.terminal-line.log   { color: #aaa; }
+.terminal-line.ok {
+  color: #336633;
+}
+.terminal-line.warn {
+  color: #aa7700;
+}
+.terminal-line.err {
+  color: #cc3333;
+}
+.terminal-line.dim {
+  color: #1e1e1e;
+}
+.terminal-line.title {
+  color: #888;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.terminal-line.log {
+  color: #aaa;
+}
 
 .terminal-cursor {
   color: #cc3333;
@@ -571,5 +740,13 @@ onMounted(() => {
   font-size: 14px;
 }
 
-@keyframes blink { 0%,100%{ opacity: 1; } 50%{ opacity: 0; } }
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
 </style>

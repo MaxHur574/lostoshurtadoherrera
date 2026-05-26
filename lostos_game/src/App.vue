@@ -23,26 +23,26 @@ const showGallery = ref(false);
 
 const desktopIcons = [
   { id: "explorer", label: "Mis archivos", icon: "📁" },
-  { id: "mail",     label: "Correo",       icon: "📧" },
-  { id: "browser",  label: "Navegador",    icon: "🌐" },
-  { id: "notes",    label: "Notas",        icon: "📝" },
-  { id: "gallery",  label: "Galería",      icon: "🖼️" },
+  { id: "mail", label: "Correo", icon: "📧" },
+  { id: "browser", label: "Navegador", icon: "🌐" },
+  { id: "notes", label: "Notas", icon: "📝" },
+  { id: "gallery", label: "Galería", icon: "🖼️" },
 ];
 
 const appMeta = {
   explorer: { label: "Explorador", icon: "📁" },
-  mail:     { label: "Correo",     icon: "📧" },
-  browser:  { label: "Navegador",  icon: "🌐" },
-  notes:    { label: "Notas",      icon: "📝" },
-  gallery:  { label: "Galería",    icon: "🖼️" },
+  mail: { label: "Correo", icon: "📧" },
+  browser: { label: "Navegador", icon: "🌐" },
+  notes: { label: "Notas", icon: "📝" },
+  gallery: { label: "Galería", icon: "🖼️" },
 };
 
 const showMap = {
   explorer: showExplorer,
-  mail:     showMail,
-  browser:  showBrowser,
-  notes:    showNotes,
-  gallery:  showGallery,
+  mail: showMail,
+  browser: showBrowser,
+  notes: showNotes,
+  gallery: showGallery,
 };
 
 function openApp(id) {
@@ -61,7 +61,6 @@ function closeApp(id) {
 
 <template>
   <div class="os-container">
-
     <!-- 1. Pantalla de inicio (correo de Windows falso) -->
     <TitleScreen v-if="stage === 'title'" @started="stage = 'vault'" />
 
@@ -83,11 +82,31 @@ function closeApp(id) {
           </div>
         </div>
 
-        <Explorer v-if="showExplorer" @close="closeApp('explorer')" @minimize="showExplorer = false" />
-        <Mail     v-if="showMail"     @close="closeApp('mail')"     @minimize="showMail = false" />
-        <Browser  v-if="showBrowser"  @close="closeApp('browser')"  @minimize="showBrowser = false" />
-        <Notes    v-if="showNotes"    @close="closeApp('notes')"    @minimize="showNotes = false" />
-        <Gallery  v-if="showGallery"  @close="closeApp('gallery')"  @minimize="showGallery = false" />
+        <Explorer
+          v-if="showExplorer"
+          @close="closeApp('explorer')"
+          @minimize="showExplorer = false"
+        />
+        <Mail
+          v-if="showMail"
+          @close="closeApp('mail')"
+          @minimize="showMail = false"
+        />
+        <Browser
+          v-if="showBrowser"
+          @close="closeApp('browser')"
+          @minimize="showBrowser = false"
+        />
+        <Notes
+          v-if="showNotes"
+          @close="closeApp('notes')"
+          @minimize="showNotes = false"
+        />
+        <Gallery
+          v-if="showGallery"
+          @close="closeApp('gallery')"
+          @minimize="showGallery = false"
+        />
       </div>
 
       <Taskbar
@@ -98,12 +117,12 @@ function closeApp(id) {
         @open-gallery="openApp('gallery')"
       />
     </template>
-
   </div>
 </template>
 
 <style>
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -144,19 +163,23 @@ body, html {
   user-select: none;
   transition: background 0.15s;
 }
-.desktop-icon:hover  { background: rgba(255,255,255,0.07); }
-.desktop-icon:active { background: rgba(74,158,255,0.2); }
+.desktop-icon:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+.desktop-icon:active {
+  background: rgba(74, 158, 255, 0.2);
+}
 .desktop-icon-img {
   font-size: 32px;
   line-height: 1;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
 }
 .desktop-icon-label {
   font-size: 11px;
   color: #ddd;
   font-family: "Segoe UI", sans-serif;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
   word-break: break-word;
   line-height: 1.3;
 }

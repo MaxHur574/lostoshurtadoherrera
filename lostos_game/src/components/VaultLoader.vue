@@ -26,11 +26,11 @@ const progress = ref(0);
 const statusText = ref("Inicializando sistema...");
 
 const steps = [
-  { at: 0,   text: "Inicializando sistema..." },
-  { at: 20,  text: "Cargando módulos de seguridad..." },
-  { at: 40,  text: "Verificando integridad..." },
-  { at: 65,  text: "Montando particiones cifradas..." },
-  { at: 85,  text: "Estableciendo sesión..." },
+  { at: 0, text: "Inicializando sistema..." },
+  { at: 20, text: "Cargando módulos de seguridad..." },
+  { at: 40, text: "Verificando integridad..." },
+  { at: 65, text: "Montando particiones cifradas..." },
+  { at: 85, text: "Estableciendo sesión..." },
   { at: 100, text: "Acceso concedido." },
 ];
 
@@ -42,7 +42,10 @@ onMounted(() => {
   const timer = setInterval(() => {
     progress.value = Math.min(progress.value + step, 100);
 
-    const current = steps.slice().reverse().find(s => progress.value >= s.at);
+    const current = steps
+      .slice()
+      .reverse()
+      .find((s) => progress.value >= s.at);
     if (current) statusText.value = current.text;
 
     if (progress.value >= 100) {
@@ -63,7 +66,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   gap: 48px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   z-index: 9999;
 }
 
@@ -78,14 +81,25 @@ onMounted(() => {
 .vault-hex {
   font-size: 52px;
   color: #cc3333;
-  text-shadow: 0 0 20px #cc3333, 0 0 40px #cc3333;
+  text-shadow:
+    0 0 20px #cc3333,
+    0 0 40px #cc3333;
   animation: hex-pulse 2s infinite;
   line-height: 1;
 }
 
 @keyframes hex-pulse {
-  0%, 100% { opacity: 1; text-shadow: 0 0 20px #cc3333, 0 0 40px #cc3333; }
-  50%       { opacity: 0.55; text-shadow: 0 0 8px #cc3333; }
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow:
+      0 0 20px #cc3333,
+      0 0 40px #cc3333;
+  }
+  50% {
+    opacity: 0.55;
+    text-shadow: 0 0 8px #cc3333;
+  }
 }
 
 .vault-title {
@@ -96,7 +110,9 @@ onMounted(() => {
   margin-top: 4px;
 }
 
-.vault-os { color: #cc3333; }
+.vault-os {
+  color: #cc3333;
+}
 
 .vault-sub {
   font-size: 11px;
