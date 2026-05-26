@@ -1,7 +1,10 @@
 <template>
-  <Window title="🖼️ Galería" @close="$emit('close')" @minimize="$emit('minimize')">
+  <Window
+    title="🖼️ Galería"
+    @close="$emit('close')"
+    @minimize="$emit('minimize')"
+  >
     <div class="gallery-app">
-
       <!-- Sidebar -->
       <div class="gallery-sidebar">
         <div
@@ -9,7 +12,10 @@
           :key="album.id"
           class="album-item"
           :class="{ active: selectedAlbum === album.id }"
-          @click="selectedAlbum = album.id; selectedPhoto = null"
+          @click="
+            selectedAlbum = album.id;
+            selectedPhoto = null;
+          "
         >
           <span class="album-icon">{{ album.icon }}</span>
           <span class="album-label">{{ album.label }}</span>
@@ -26,12 +32,16 @@
               class="view-btn"
               :class="{ active: viewMode === 'grid' }"
               @click="viewMode = 'grid'"
-            >⊞</button>
+            >
+              ⊞
+            </button>
             <button
               class="view-btn"
               :class="{ active: viewMode === 'list' }"
               @click="viewMode = 'list'"
-            >☰</button>
+            >
+              ☰
+            </button>
           </div>
         </div>
 
@@ -41,12 +51,17 @@
             v-for="photo in currentAlbum?.photos"
             :key="photo.id"
             class="photo-thumb"
-            :class="{ selected: selectedPhoto?.id === photo.id, corrupted: photo.corrupted }"
+            :class="{
+              selected: selectedPhoto?.id === photo.id,
+              corrupted: photo.corrupted,
+            }"
             @click="selectedPhoto = photo"
             @dblclick="openPhoto(photo)"
           >
             <div class="thumb-img" :style="{ background: photo.color }">
-              <span class="thumb-icon">{{ photo.corrupted ? '⚠️' : photo.emoji }}</span>
+              <span class="thumb-icon">{{
+                photo.corrupted ? "⚠️" : photo.emoji
+              }}</span>
               <div v-if="photo.corrupted" class="corrupted-overlay">DAÑADO</div>
             </div>
             <div class="thumb-name">{{ photo.name }}</div>
@@ -59,12 +74,15 @@
             v-for="photo in currentAlbum?.photos"
             :key="photo.id"
             class="photo-row"
-            :class="{ selected: selectedPhoto?.id === photo.id, corrupted: photo.corrupted }"
+            :class="{
+              selected: selectedPhoto?.id === photo.id,
+              corrupted: photo.corrupted,
+            }"
             @click="selectedPhoto = photo"
             @dblclick="openPhoto(photo)"
           >
             <div class="row-thumb" :style="{ background: photo.color }">
-              <span>{{ photo.corrupted ? '⚠️' : photo.emoji }}</span>
+              <span>{{ photo.corrupted ? "⚠️" : photo.emoji }}</span>
             </div>
             <div class="row-info">
               <div class="row-name">{{ photo.name }}</div>
@@ -77,39 +95,69 @@
         <!-- Status bar -->
         <div class="gallery-status">
           {{ currentAlbum?.photos.length }} fotos
-          <span v-if="selectedPhoto"> · {{ selectedPhoto.name }} seleccionada</span>
+          <span v-if="selectedPhoto">
+            · {{ selectedPhoto.name }} seleccionada</span
+          >
         </div>
       </div>
-
     </div>
 
     <!-- Lightbox -->
     <Teleport to="body">
-      <div v-if="lightboxPhoto" class="lightbox" @click.self="lightboxPhoto = null">
+      <div
+        v-if="lightboxPhoto"
+        class="lightbox"
+        @click.self="lightboxPhoto = null"
+      >
         <div class="lightbox-window">
           <div class="lightbox-header">
             <span>{{ lightboxPhoto.name }}</span>
             <button class="lb-close" @click="lightboxPhoto = null">✕</button>
           </div>
           <div class="lightbox-body">
-            <div class="lightbox-img" :style="{ background: lightboxPhoto.color }">
-              <span class="lb-emoji">{{ lightboxPhoto.corrupted ? '⚠️' : lightboxPhoto.emoji }}</span>
+            <div
+              class="lightbox-img"
+              :style="{ background: lightboxPhoto.color }"
+            >
+              <span class="lb-emoji">{{
+                lightboxPhoto.corrupted ? "⚠️" : lightboxPhoto.emoji
+              }}</span>
               <div v-if="lightboxPhoto.corrupted" class="lb-corrupted">
                 <div class="lbc-title">Archivo dañado</div>
-                <div class="lbc-sub">No se puede mostrar la imagen completa.<br/>Datos parcialmente recuperados.</div>
+                <div class="lbc-sub">
+                  No se puede mostrar la imagen completa.<br />Datos
+                  parcialmente recuperados.
+                </div>
               </div>
             </div>
             <div class="lightbox-meta">
-              <div class="meta-row"><span class="meta-key">Archivo</span><span class="meta-val">{{ lightboxPhoto.name }}</span></div>
-              <div class="meta-row"><span class="meta-key">Fecha</span><span class="meta-val">{{ lightboxPhoto.date }}</span></div>
-              <div class="meta-row"><span class="meta-key">Tamaño</span><span class="meta-val">{{ lightboxPhoto.size }}</span></div>
-              <div class="meta-row"><span class="meta-key">Resolución</span><span class="meta-val">{{ lightboxPhoto.res }}</span></div>
-              <div v-if="lightboxPhoto.note" class="meta-note">{{ lightboxPhoto.note }}</div>
+              <div class="meta-row">
+                <span class="meta-key">Archivo</span
+                ><span class="meta-val">{{ lightboxPhoto.name }}</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">Fecha</span
+                ><span class="meta-val">{{ lightboxPhoto.date }}</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">Tamaño</span
+                ><span class="meta-val">{{ lightboxPhoto.size }}</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-key">Resolución</span
+                ><span class="meta-val">{{ lightboxPhoto.res }}</span>
+              </div>
+              <div v-if="lightboxPhoto.note" class="meta-note">
+                {{ lightboxPhoto.note }}
+              </div>
             </div>
           </div>
           <div class="lightbox-nav">
             <button class="lb-nav" @click="prevPhoto">‹ Anterior</button>
-            <span class="lb-counter">{{ currentPhotoIndex + 1 }} / {{ currentAlbum?.photos.length }}</span>
+            <span class="lb-counter"
+              >{{ currentPhotoIndex + 1 }} /
+              {{ currentAlbum?.photos.length }}</span
+            >
             <button class="lb-nav" @click="nextPhoto">Siguiente ›</button>
           </div>
         </div>
@@ -283,12 +331,14 @@ const albums = ref([
 ]);
 
 const currentAlbum = computed(() =>
-  albums.value.find(a => a.id === selectedAlbum.value)
+  albums.value.find((a) => a.id === selectedAlbum.value),
 );
 
 const currentPhotoIndex = computed(() => {
   if (!lightboxPhoto.value || !currentAlbum.value) return 0;
-  return currentAlbum.value.photos.findIndex(p => p.id === lightboxPhoto.value.id);
+  return currentAlbum.value.photos.findIndex(
+    (p) => p.id === lightboxPhoto.value.id,
+  );
 });
 
 function openPhoto(photo) {
@@ -314,7 +364,7 @@ function nextPhoto() {
 .gallery-app {
   display: flex;
   height: 460px;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   font-size: 13px;
 }
 
@@ -338,13 +388,25 @@ function nextPhoto() {
   font-size: 12px;
   border-radius: 4px;
   margin: 1px 4px;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
-.album-item:hover  { background: #1a1a1a; color: #bbb; }
-.album-item.active { background: #1a3a5c; color: #fff; }
+.album-item:hover {
+  background: #1a1a1a;
+  color: #bbb;
+}
+.album-item.active {
+  background: #1a3a5c;
+  color: #fff;
+}
 
-.album-icon  { font-size: 14px; }
-.album-label { flex: 1; }
+.album-icon {
+  font-size: 14px;
+}
+.album-label {
+  flex: 1;
+}
 .album-count {
   font-size: 10px;
   background: #1e1e1e;
@@ -352,7 +414,10 @@ function nextPhoto() {
   padding: 1px 5px;
   border-radius: 8px;
 }
-.album-item.active .album-count { background: #0f2a40; color: #4a9eff; }
+.album-item.active .album-count {
+  background: #0f2a40;
+  color: #4a9eff;
+}
 
 /* Main */
 .gallery-main {
@@ -373,8 +438,15 @@ function nextPhoto() {
   flex-shrink: 0;
 }
 
-.toolbar-title { font-size: 12px; color: #888; font-weight: 600; }
-.toolbar-right  { display: flex; gap: 2px; }
+.toolbar-title {
+  font-size: 12px;
+  color: #888;
+  font-weight: 600;
+}
+.toolbar-right {
+  display: flex;
+  gap: 2px;
+}
 
 .view-btn {
   background: none;
@@ -386,8 +458,15 @@ function nextPhoto() {
   border-radius: 4px;
   transition: all 0.15s;
 }
-.view-btn:hover  { color: #aaa; background: #1a1a1a; }
-.view-btn.active { color: #4a9eff; border-color: #1a3a5c; background: #0f2030; }
+.view-btn:hover {
+  color: #aaa;
+  background: #1a1a1a;
+}
+.view-btn.active {
+  color: #4a9eff;
+  border-color: #1a3a5c;
+  background: #0f2030;
+}
 
 /* Grid */
 .photo-grid {
@@ -406,11 +485,20 @@ function nextPhoto() {
   border-radius: 6px;
   overflow: hidden;
   border: 2px solid transparent;
-  transition: border-color 0.15s, transform 0.1s;
+  transition:
+    border-color 0.15s,
+    transform 0.1s;
 }
-.photo-thumb:hover    { border-color: #333; transform: scale(1.02); }
-.photo-thumb.selected { border-color: #4a9eff; }
-.photo-thumb.corrupted { opacity: 0.6; }
+.photo-thumb:hover {
+  border-color: #333;
+  transform: scale(1.02);
+}
+.photo-thumb.selected {
+  border-color: #4a9eff;
+}
+.photo-thumb.corrupted {
+  opacity: 0.6;
+}
 
 .thumb-img {
   width: 90px;
@@ -422,15 +510,17 @@ function nextPhoto() {
   overflow: hidden;
 }
 
-.thumb-icon { font-size: 28px; }
+.thumb-icon {
+  font-size: 28px;
+}
 
 .corrupted-overlay {
   position: absolute;
   inset: 0;
   background: repeating-linear-gradient(
     45deg,
-    rgba(180,30,30,0.12) 0px,
-    rgba(180,30,30,0.12) 2px,
+    rgba(180, 30, 30, 0.12) 0px,
+    rgba(180, 30, 30, 0.12) 2px,
     transparent 2px,
     transparent 8px
   );
@@ -469,9 +559,15 @@ function nextPhoto() {
   border-bottom: 1px solid #111;
   transition: background 0.15s;
 }
-.photo-row:hover    { background: #141414; }
-.photo-row.selected { background: #0f2030; }
-.photo-row.corrupted { opacity: 0.6; }
+.photo-row:hover {
+  background: #141414;
+}
+.photo-row.selected {
+  background: #0f2030;
+}
+.photo-row.corrupted {
+  opacity: 0.6;
+}
 
 .row-thumb {
   width: 40px;
@@ -484,9 +580,22 @@ function nextPhoto() {
   flex-shrink: 0;
 }
 
-.row-info { flex: 1; overflow: hidden; }
-.row-name { font-size: 12px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.row-meta { font-size: 10px; color: #444; margin-top: 2px; }
+.row-info {
+  flex: 1;
+  overflow: hidden;
+}
+.row-name {
+  font-size: 12px;
+  color: #ccc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-meta {
+  font-size: 10px;
+  color: #444;
+  margin-top: 2px;
+}
 
 .row-badge {
   font-size: 10px;
@@ -512,7 +621,7 @@ function nextPhoto() {
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -528,7 +637,7 @@ function nextPhoto() {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 0 60px rgba(0,0,0,0.9);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
 }
 
 .lightbox-header {
@@ -550,7 +659,9 @@ function nextPhoto() {
   font-size: 12px;
   transition: color 0.15s;
 }
-.lb-close:hover { color: #ff4444; }
+.lb-close:hover {
+  color: #ff4444;
+}
 
 .lightbox-body {
   display: flex;
@@ -568,7 +679,10 @@ function nextPhoto() {
   position: relative;
 }
 
-.lb-emoji { font-size: 64px; opacity: 0.3; }
+.lb-emoji {
+  font-size: 64px;
+  opacity: 0.3;
+}
 
 .lb-corrupted {
   position: absolute;
@@ -579,16 +693,25 @@ function nextPhoto() {
   justify-content: center;
   background: repeating-linear-gradient(
     45deg,
-    rgba(180,30,30,0.08) 0px,
-    rgba(180,30,30,0.08) 2px,
+    rgba(180, 30, 30, 0.08) 0px,
+    rgba(180, 30, 30, 0.08) 2px,
     transparent 2px,
     transparent 10px
   );
   gap: 6px;
 }
 
-.lbc-title { font-size: 14px; color: #cc4444; font-weight: bold; }
-.lbc-sub   { font-size: 11px; color: #555; text-align: center; line-height: 1.6; }
+.lbc-title {
+  font-size: 14px;
+  color: #cc4444;
+  font-weight: bold;
+}
+.lbc-sub {
+  font-size: 11px;
+  color: #555;
+  text-align: center;
+  line-height: 1.6;
+}
 
 .lightbox-meta {
   width: 180px;
@@ -602,9 +725,23 @@ function nextPhoto() {
   gap: 8px;
 }
 
-.meta-row { display: flex; flex-direction: column; gap: 1px; }
-.meta-key { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
-.meta-val { font-size: 12px; color: #888; font-family: 'Courier New', monospace; word-break: break-all; }
+.meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.meta-key {
+  font-size: 10px;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.meta-val {
+  font-size: 12px;
+  color: #888;
+  font-family: "Courier New", monospace;
+  word-break: break-all;
+}
 
 .meta-note {
   margin-top: 6px;
@@ -635,10 +772,18 @@ function nextPhoto() {
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  font-family: 'Segoe UI', sans-serif;
-  transition: background 0.15s, color 0.15s;
+  font-family: "Segoe UI", sans-serif;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
-.lb-nav:hover { background: #222; color: #ccc; }
+.lb-nav:hover {
+  background: #222;
+  color: #ccc;
+}
 
-.lb-counter { font-size: 11px; color: #444; }
+.lb-counter {
+  font-size: 11px;
+  color: #444;
+}
 </style>

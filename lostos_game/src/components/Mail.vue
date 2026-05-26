@@ -1,10 +1,12 @@
 <template>
-  <Window title="📧 Correo" @close="$emit('close')" @minimize="$emit('minimize')">
-
+  <Window
+    title="📧 Correo"
+    @close="$emit('close')"
+    @minimize="$emit('minimize')"
+  >
     <!-- ── PANTALLA DE LOGIN ─────────────────────────────────────────── -->
     <div v-if="!loggedIn" class="login-screen">
       <div class="login-box">
-
         <div class="login-logo">📧</div>
         <div class="login-title">lost.sys — Correo</div>
         <div class="login-subtitle">Inicia sesión para continuar</div>
@@ -33,8 +35,12 @@
               autocomplete="off"
               @keyup.enter="tryLogin"
             />
-            <button class="toggle-pass" @click="showPass = !showPass" tabindex="-1">
-              {{ showPass ? '🙈' : '👁️' }}
+            <button
+              class="toggle-pass"
+              @click="showPass = !showPass"
+              tabindex="-1"
+            >
+              {{ showPass ? "🙈" : "👁️" }}
             </button>
           </div>
 
@@ -45,26 +51,29 @@
             </span>
           </p>
 
-          <button class="login-btn" @click="tryLogin" :disabled="!loginUser || !loginPass">
+          <button
+            class="login-btn"
+            @click="tryLogin"
+            :disabled="!loginUser || !loginPass"
+          >
             Iniciar sesión
           </button>
         </div>
 
-        <div class="login-footer">
-          Sistema de correo local · lost.sys v2.1
-        </div>
+        <div class="login-footer">Sistema de correo local · lost.sys v2.1</div>
       </div>
     </div>
 
     <!-- ── APP DE CORREO (tras login) ──────────────────────────────── -->
     <div v-else class="mail-app">
-
       <!-- Sidebar -->
       <div class="mail-sidebar">
         <div class="mail-user-badge">
           <span class="mub-icon">👤</span>
           <span class="mub-name">{{ loginUser }}</span>
-          <button class="mub-logout" @click="logout" title="Cerrar sesión">⏏</button>
+          <button class="mub-logout" @click="logout" title="Cerrar sesión">
+            ⏏
+          </button>
         </div>
         <div class="mail-folders">
           <div
@@ -72,11 +81,16 @@
             :key="folder.id"
             class="mail-folder"
             :class="{ active: currentFolder === folder.id }"
-            @click="currentFolder = folder.id; selectedMail = null"
+            @click="
+              currentFolder = folder.id;
+              selectedMail = null;
+            "
           >
             <span>{{ folder.icon }}</span>
             <span>{{ folder.label }}</span>
-            <span v-if="folder.unread" class="unread-badge">{{ folder.unread }}</span>
+            <span v-if="folder.unread" class="unread-badge">{{
+              folder.unread
+            }}</span>
           </div>
         </div>
       </div>
@@ -87,7 +101,10 @@
           v-for="mail in currentMails"
           :key="mail.id"
           class="mail-item"
-          :class="{ selected: selectedMail?.id === mail.id, unread: mail.unread }"
+          :class="{
+            selected: selectedMail?.id === mail.id,
+            unread: mail.unread,
+          }"
           @click="openMail(mail)"
         >
           <div class="mail-from">{{ mail.from }}</div>
@@ -95,7 +112,9 @@
           <div class="mail-preview">{{ mail.preview }}</div>
           <div class="mail-date">{{ mail.date }}</div>
         </div>
-        <div v-if="currentMails.length === 0" class="mail-empty">Sin mensajes</div>
+        <div v-if="currentMails.length === 0" class="mail-empty">
+          Sin mensajes
+        </div>
       </div>
 
       <!-- Vista del correo -->
@@ -104,8 +123,12 @@
           <div class="mail-header">
             <div class="mail-view-subject">{{ selectedMail.subject }}</div>
             <div class="mail-view-meta">
-              <span>De: <b>{{ selectedMail.from }}</b></span>
-              <span>Para: <b>{{ selectedMail.to }}</b></span>
+              <span
+                >De: <b>{{ selectedMail.from }}</b></span
+              >
+              <span
+                >Para: <b>{{ selectedMail.to }}</b></span
+              >
               <span>{{ selectedMail.date }}</span>
             </div>
           </div>
@@ -116,79 +139,78 @@
         </div>
       </div>
     </div>
-
   </Window>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import Window from './Window.vue'
+import { ref, computed } from "vue";
+import Window from "./Window.vue";
 
-defineEmits(['close', 'minimize'])
+defineEmits(["close", "minimize"]);
 
 // ── Login ──────────────────────────────────────────────────────────────────
-const CORRECT_USER = 'vherrera.mail'
-const CORRECT_PASS = 'Luna104'
+const CORRECT_USER = "vherrera.mail";
+const CORRECT_PASS = "Luna104";
 
-const loggedIn     = ref(false)
-const loginUser    = ref('')
-const loginPass    = ref('')
-const loginError   = ref('')
-const loginAttempts = ref(0)
-const showPass     = ref(false)
-const pwdRef       = ref(null)
+const loggedIn = ref(false);
+const loginUser = ref("");
+const loginPass = ref("");
+const loginError = ref("");
+const loginAttempts = ref(0);
+const showPass = ref(false);
+const pwdRef = ref(null);
 
 function tryLogin() {
-  if (!loginUser.value || !loginPass.value) return
+  if (!loginUser.value || !loginPass.value) return;
 
   if (
     loginUser.value.trim().toLowerCase() === CORRECT_USER &&
     loginPass.value === CORRECT_PASS
   ) {
-    loggedIn.value   = true
-    loginError.value = ''
+    loggedIn.value = true;
+    loginError.value = "";
   } else {
-    loginAttempts.value++
-    loginError.value = loginAttempts.value === 1
-      ? 'Usuario o contraseña incorrectos.'
-      : `Acceso denegado. Intento ${loginAttempts.value}.`
-    loginPass.value = ''
+    loginAttempts.value++;
+    loginError.value =
+      loginAttempts.value === 1
+        ? "Usuario o contraseña incorrectos."
+        : `Acceso denegado. Intento ${loginAttempts.value}.`;
+    loginPass.value = "";
   }
 }
 
 function logout() {
-  loggedIn.value    = false
-  loginUser.value   = ''
-  loginPass.value   = ''
-  loginError.value  = ''
-  loginAttempts.value = 0
-  selectedMail.value  = null
-  currentFolder.value = 'inbox'
+  loggedIn.value = false;
+  loginUser.value = "";
+  loginPass.value = "";
+  loginError.value = "";
+  loginAttempts.value = 0;
+  selectedMail.value = null;
+  currentFolder.value = "inbox";
 }
 
 // ── Correo ─────────────────────────────────────────────────────────────────
-const currentFolder = ref('inbox')
-const selectedMail  = ref(null)
+const currentFolder = ref("inbox");
+const selectedMail = ref(null);
 
 const folders = [
-  { id: 'inbox',  icon: '📥', label: 'Bandeja de entrada', unread: 2 },
-  { id: 'sent',   icon: '📤', label: 'Enviados',            unread: 0 },
-  { id: 'drafts', icon: '📝', label: 'Borradores',          unread: 1 },
-  { id: 'trash',  icon: '🗑️', label: 'Papelera',            unread: 0 },
-]
+  { id: "inbox", icon: "📥", label: "Bandeja de entrada", unread: 2 },
+  { id: "sent", icon: "📤", label: "Enviados", unread: 0 },
+  { id: "drafts", icon: "📝", label: "Borradores", unread: 1 },
+  { id: "trash", icon: "🗑️", label: "Papelera", unread: 0 },
+];
 
 const mails = {
   inbox: [
     {
       id: 1,
-      from: 'sistema@lost.sys',
-      to: 'vherrera.mail',
-      subject: 'Aviso de integridad del sistema',
-      preview: 'Se han detectado 3 archivos modificados externamente...',
-      date: '14/05/2024 02:31',
+      from: "sistema@lost.sys",
+      to: "vherrera.mail",
+      subject: "Aviso de integridad del sistema",
+      preview: "Se han detectado 3 archivos modificados externamente...",
+      date: "14/05/2024 02:31",
       unread: true,
-      body:
-`Aviso automático del sistema.
+      body: `Aviso automático del sistema.
 
 Se han detectado 3 archivos modificados externamente durante el último arranque.
 Los archivos afectados no han podido ser verificados por el módulo de integridad.
@@ -201,14 +223,13 @@ No respondas a este correo. Este es un mensaje automático.
     },
     {
       id: 2,
-      from: 'remitentedesconocido@[redactado]',
-      to: 'vherrera.mail',
-      subject: 'Sé lo que encontraste',
-      preview: 'No sigas buscando. Por tu bien.',
-      date: '13/05/2024 23:47',
+      from: "remitentedesconocido@[redactado]",
+      to: "vherrera.mail",
+      subject: "Sé lo que encontraste",
+      preview: "No sigas buscando. Por tu bien.",
+      date: "13/05/2024 23:47",
       unread: true,
-      body:
-`No sigas buscando.
+      body: `No sigas buscando.
 
 Ya saben que tienes el informe.
 Ya saben dónde estás.
@@ -225,14 +246,13 @@ Es un consejo.
     },
     {
       id: 3,
-      from: 'd.alsina@fiscalia.gob',
-      to: 'vherrera.mail',
-      subject: 'Re: Solicitud de reunión — Caso 0047',
-      preview: 'Estimada V.H., lamentablemente no podemos continuar...',
-      date: '10/03/2022 09:15',
+      from: "d.alsina@fiscalia.gob",
+      to: "vherrera.mail",
+      subject: "Re: Solicitud de reunión — Caso 0047",
+      preview: "Estimada V.H., lamentablemente no podemos continuar...",
+      date: "10/03/2022 09:15",
       unread: false,
-      body:
-`Estimada V.H.,
+      body: `Estimada V.H.,
 
 Lamentablemente no podemos continuar con esta línea de investigación.
 El caso 0047 fue archivado el 07/03/2022 por falta de evidencia suficiente.
@@ -248,14 +268,13 @@ Fiscal de distrito — Unidad de Delitos Informáticos`,
   sent: [
     {
       id: 4,
-      from: 'vherrera.mail',
-      to: 'prensa@periodico.cl',
-      subject: 'URGENTE — Documentación adjunta caso Vortex',
-      preview: 'Si estás recibiendo esto, algo me ha pasado...',
-      date: '14/05/2024 03:41',
+      from: "vherrera.mail",
+      to: "prensa@periodico.cl",
+      subject: "URGENTE — Documentación adjunta caso Vortex",
+      preview: "Si estás recibiendo esto, algo me ha pasado...",
+      date: "14/05/2024 03:41",
       unread: false,
-      body:
-`Si estás recibiendo esto, algo me ha pasado.
+      body: `Si estás recibiendo esto, algo me ha pasado.
 
 Adjunto todo lo que tengo sobre Vortex Data Sol y su relación con el caso 0047.
 El fiscal Alsina está involucrado. Hay registros.
@@ -273,14 +292,13 @@ Publica todo.
   drafts: [
     {
       id: 5,
-      from: 'vherrera.mail',
-      to: '',
-      subject: 'BORRADOR — NO BORRAR',
-      preview: 'Si desaparezco: no abras el archivo principal...',
-      date: '14/05/2024 03:55',
+      from: "vherrera.mail",
+      to: "",
+      subject: "BORRADOR — NO BORRAR",
+      preview: "Si desaparezco: no abras el archivo principal...",
+      date: "14/05/2024 03:55",
       unread: true,
-      body:
-`Si desaparezco: no abras el archivo principal hasta encontrar las tres notas.
+      body: `Si desaparezco: no abras el archivo principal hasta encontrar las tres notas.
 
 Están dentro del sistema.
 Están escondidas donde nadie buscaría.
@@ -299,14 +317,13 @@ Sigue buscando.
     },
     {
       id: 6,
-      from: 'vherrera.mail',
-      to: '',
-      subject: 'Re: acceso interno',
-      preview: 'La clave principal nunca debe quedar escrita completa...',
-      date: '12/05/2024 22:10',
+      from: "vherrera.mail",
+      to: "",
+      subject: "Re: acceso interno",
+      preview: "La clave principal nunca debe quedar escrita completa...",
+      date: "12/05/2024 22:10",
       unread: false,
-      body:
-`La clave principal nunca debe quedar escrita completa.
+      body: `La clave principal nunca debe quedar escrita completa.
 
 Fragmento recuperado:
 "La fecha abre el acceso oculto. No la abras sin encontrar la clave."
@@ -319,15 +336,15 @@ Luego la bóveda.
     },
   ],
   trash: [],
-}
+};
 
-const currentMails = computed(() => mails[currentFolder.value] || [])
+const currentMails = computed(() => mails[currentFolder.value] || []);
 
 function openMail(mail) {
-  selectedMail.value = mail
-  mail.unread = false
-  const folder = folders.find(f => f.id === currentFolder.value)
-  if (folder && folder.unread > 0) folder.unread--
+  selectedMail.value = mail;
+  mail.unread = false;
+  const folder = folders.find((f) => f.id === currentFolder.value);
+  if (folder && folder.unread > 0) folder.unread--;
 }
 </script>
 
@@ -349,9 +366,22 @@ function openMail(mail) {
   gap: 6px;
 }
 
-.login-logo     { font-size: 36px; margin-bottom: 4px; }
-.login-title    { font-size: 15px; color: #ccc; font-family: 'Segoe UI', sans-serif; font-weight: 600; }
-.login-subtitle { font-size: 11px; color: #444; font-family: 'Segoe UI', sans-serif; margin-bottom: 12px; }
+.login-logo {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+.login-title {
+  font-size: 15px;
+  color: #ccc;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 600;
+}
+.login-subtitle {
+  font-size: 11px;
+  color: #444;
+  font-family: "Segoe UI", sans-serif;
+  margin-bottom: 12px;
+}
 
 .login-form {
   width: 100%;
@@ -370,7 +400,7 @@ function openMail(mail) {
 .login-label {
   font-size: 10px;
   color: #555;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -383,12 +413,14 @@ function openMail(mail) {
   font-size: 13px;
   padding: 8px 10px;
   outline: none;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   transition: border-color 0.15s;
   width: 100%;
   box-sizing: border-box;
 }
-.login-input:focus { border-color: #4a9eff; }
+.login-input:focus {
+  border-color: #4a9eff;
+}
 
 .toggle-pass {
   position: absolute;
@@ -402,12 +434,14 @@ function openMail(mail) {
   transition: opacity 0.15s;
   padding: 0;
 }
-.toggle-pass:hover { opacity: 1; }
+.toggle-pass:hover {
+  opacity: 1;
+}
 
 .login-error {
   font-size: 11px;
   color: #cc4444;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -427,25 +461,30 @@ function openMail(mail) {
   border-radius: 4px;
   cursor: pointer;
   font-size: 13px;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   transition: background 0.15s;
   margin-top: 4px;
 }
-.login-btn:hover:not(:disabled) { background: #1f4a7a; }
-.login-btn:disabled { opacity: 0.3; cursor: default; }
+.login-btn:hover:not(:disabled) {
+  background: #1f4a7a;
+}
+.login-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
 
 .login-footer {
   margin-top: 16px;
   font-size: 10px;
   color: #222;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 /* ── Mail app ─────────────────────────────────────────────────────────────── */
 .mail-app {
   display: flex;
   height: 460px;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   font-size: 13px;
 }
 
@@ -468,12 +507,15 @@ function openMail(mail) {
   border-bottom: 1px solid #1a1a1a;
   margin-bottom: 6px;
 }
-.mub-icon { font-size: 13px; opacity: 0.5; }
+.mub-icon {
+  font-size: 13px;
+  opacity: 0.5;
+}
 .mub-name {
   flex: 1;
   font-size: 10px;
   color: #555;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -487,9 +529,15 @@ function openMail(mail) {
   padding: 2px;
   transition: color 0.15s;
 }
-.mub-logout:hover { color: #cc4444; }
+.mub-logout:hover {
+  color: #cc4444;
+}
 
-.mail-folders { display: flex; flex-direction: column; gap: 1px; }
+.mail-folders {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
 
 .mail-folder {
   display: flex;
@@ -503,8 +551,14 @@ function openMail(mail) {
   transition: background 0.15s;
   font-size: 12px;
 }
-.mail-folder:hover  { background: #1a1a1a; color: #ccc; }
-.mail-folder.active { background: #1a3a5c; color: #fff; }
+.mail-folder:hover {
+  background: #1a1a1a;
+  color: #ccc;
+}
+.mail-folder.active {
+  background: #1a3a5c;
+  color: #fff;
+}
 
 .unread-badge {
   margin-left: auto;
@@ -530,16 +584,54 @@ function openMail(mail) {
   cursor: pointer;
   transition: background 0.15s;
 }
-.mail-item:hover    { background: #1a1a1a; }
-.mail-item.selected { background: #1a3a5c; }
-.mail-item.unread .mail-subject { color: #fff; font-weight: bold; }
-.mail-item.unread .mail-from    { color: #4a9eff; }
+.mail-item:hover {
+  background: #1a1a1a;
+}
+.mail-item.selected {
+  background: #1a3a5c;
+}
+.mail-item.unread .mail-subject {
+  color: #fff;
+  font-weight: bold;
+}
+.mail-item.unread .mail-from {
+  color: #4a9eff;
+}
 
-.mail-from    { font-size: 11px; color: #777; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mail-subject { font-size: 12px; color: #ccc; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mail-preview { font-size: 11px; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mail-date    { font-size: 10px; color: #444; margin-top: 4px; }
-.mail-empty   { padding: 20px; color: #444; text-align: center; font-size: 12px; }
+.mail-from {
+  font-size: 11px;
+  color: #777;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mail-subject {
+  font-size: 12px;
+  color: #ccc;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mail-preview {
+  font-size: 11px;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mail-date {
+  font-size: 10px;
+  color: #444;
+  margin-top: 4px;
+}
+.mail-empty {
+  padding: 20px;
+  color: #444;
+  text-align: center;
+  font-size: 12px;
+}
 
 .mail-view {
   flex: 1;
@@ -556,7 +648,11 @@ function openMail(mail) {
   font-size: 13px;
 }
 
-.mail-content { display: flex; flex-direction: column; height: 100%; }
+.mail-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
 .mail-header {
   padding: 16px;
@@ -571,14 +667,24 @@ function openMail(mail) {
   margin-bottom: 8px;
 }
 
-.mail-view-meta { display: flex; flex-direction: column; gap: 2px; }
-.mail-view-meta span { font-size: 11px; color: #555; }
-.mail-view-meta b    { color: #888; font-weight: normal; }
+.mail-view-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mail-view-meta span {
+  font-size: 11px;
+  color: #555;
+}
+.mail-view-meta b {
+  color: #888;
+  font-weight: normal;
+}
 
 .mail-body {
   padding: 16px;
   color: #aaa;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 13px;
   white-space: pre-wrap;
   line-height: 1.7;

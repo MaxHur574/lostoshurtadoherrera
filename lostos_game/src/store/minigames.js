@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { defineStore } from "pinia";
+import { ref } from "vue";
 
-export const useMinigames = defineStore('minigames', () => {
+export const useMinigames = defineStore("minigames", () => {
   const unlocked = ref({
-    Pista_1:      false,
+    Pista_1: false,
     Pista_2: false,
-    Pista_3:    false,
+    Pista_3: false,
   });
 
   function unlock(key) {
