@@ -159,6 +159,7 @@ import camaraImg from "../assets/gallery/camara_seguridad_0314.jpg";
 import calendarioImg from "../assets/gallery/octubre_calendario.jpg";
 import creadorImg from "../assets/gallery/creador_bloqueado.jpg";
 import scanEvidenciaImg from "../assets/gallery/scan_evidencia_A.jpg";
+import { PASSWORDS } from '../store/system.js';
 
 const emit = defineEmits(["close", "minimize"]);
 
@@ -275,7 +276,7 @@ const albums = ref([
         size: "3.2 MB",
         res: "1920×1080",
         locked: true,
-        lockCode: "0314",
+        lockCode: PASSWORDS.galeria_creador,
         note: "Acceso restringido. Se requiere código.",
       },
     ],

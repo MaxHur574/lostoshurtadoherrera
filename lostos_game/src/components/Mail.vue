@@ -123,12 +123,13 @@
 <script setup>
 import { ref, computed } from 'vue'
 import Window from './Window.vue'
+import { PASSWORDS } from '../store/system.js'
 
 defineEmits(['close', 'minimize'])
 
 // ── Login ──────────────────────────────────────────────────────────────────
-const CORRECT_USER = 'vherrera.mail'
-const CORRECT_PASS = 'Luna'
+const CORRECT_USER = PASSWORDS.mail_user
+const CORRECT_PASS = PASSWORDS.mail_pass
 
 const loggedIn      = ref(false)
 const loginUser     = ref('')

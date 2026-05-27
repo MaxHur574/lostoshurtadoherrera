@@ -2,10 +2,11 @@ import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 
 export const PASSWORDS = {
-  investigacion_privada: "luna", // Nivel 1 → deducida de URGENTE_LEER + Mascotas
-  privado: "0514", // Legacy Explorer (fecha del log)
+  investigacion_privada: "Luna",
+  mail_user: "vherrera.mail",
+  mail_pass: "Luna14",
+  galeria_creador: "0314",    // añadir
 };
-
 // Flags narrativos que persisten durante la sesión.
 // Añadir nuevos flags aquí al diseñar nuevos niveles.
 const INITIAL_FLAGS = {

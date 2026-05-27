@@ -71,12 +71,8 @@
               <div class="mail-row-avatar" style="background: #5c8dd6">J</div>
               <div class="mail-row-body">
                 <div class="mail-row-from">Javier Ruiz</div>
-                <div class="mail-row-subject">
-                  Re: Entrega proyecto de redes
-                </div>
-                <div class="mail-row-preview">
-                  Sí, el martes antes de las 23:59 ...
-                </div>
+                <div class="mail-row-subject">Re: Entrega proyecto de redes</div>
+                <div class="mail-row-preview">Sí, el martes antes de las 23:59 ...</div>
               </div>
               <div class="mail-row-time">Ayer</div>
             </div>
@@ -84,12 +80,8 @@
               <div class="mail-row-avatar" style="background: #6db06d">U</div>
               <div class="mail-row-body">
                 <div class="mail-row-from">Universidad — Sistemas</div>
-                <div class="mail-row-subject">
-                  Horarios actualizados — Semestre 2
-                </div>
-                <div class="mail-row-preview">
-                  Te informamos que los horarios han sido...
-                </div>
+                <div class="mail-row-subject">Horarios actualizados — Semestre 2</div>
+                <div class="mail-row-preview">Te informamos que los horarios han sido...</div>
               </div>
               <div class="mail-row-time">Lun</div>
             </div>
@@ -98,24 +90,17 @@
               <div class="mail-row-body">
                 <div class="mail-row-from">Ale 🦋</div>
                 <div class="mail-row-subject">jajaja mira esto</div>
-                <div class="mail-row-preview">
-                  te juro que me morí de la risa...
-                </div>
+                <div class="mail-row-preview">te juro que me morí de la risa...</div>
               </div>
               <div class="mail-row-time">Dom</div>
             </div>
 
             <!-- EL CORREO MISTERIOSO -->
-            <div
-              class="mail-row unread selected"
-              @click="selectedMystery = true"
-            >
+            <div class="mail-row unread selected" @click="selectedMystery = true">
               <div class="unread-dot" />
               <div class="mail-row-avatar mystery-avatar">?</div>
               <div class="mail-row-body">
-                <div class="mail-row-from mystery-from">
-                  4x7f2a9b3e@noreply.sys
-                </div>
+                <div class="mail-row-from mystery-from">4x7f2a9b3e@noreply.sys</div>
                 <div class="mail-row-subject mystery-subject">(sin asunto)</div>
                 <div class="mail-row-preview">— — — — —</div>
               </div>
@@ -135,9 +120,7 @@
               <div class="mystery-header">
                 <div class="mystery-subject-line">(sin asunto)</div>
                 <div class="mystery-meta">
-                  <span class="mystery-sender"
-                    >De: <strong>4x7f2a9b3e@noreply.sys</strong></span
-                  >
+                  <span class="mystery-sender">De: <strong>4x7f2a9b3e@noreply.sys</strong></span>
                   <span class="mystery-date">hoy, {{ currentTime }}</span>
                 </div>
                 <div class="mystery-to">Para: valeria.m@gmail.com</div>
@@ -145,28 +128,23 @@
 
               <!-- CUERPO: menú o sub-panel -->
               <div class="mystery-body">
+
                 <!-- MENÚ PRINCIPAL -->
                 <div v-if="!activePanel" class="game-menu">
                   <div class="gm-cursor-line">
                     <span class="cursor-blink">_</span>
                   </div>
                   <div class="gm-label">// LOSTO OS v0.1 — MENÚ PRINCIPAL</div>
-
                   <div
                     v-for="(item, i) in menuItems"
                     :key="item.id"
                     class="gm-item"
-                    :class="{
-                      selected: hoveredItem === i,
-                      disabled: item.disabled,
-                    }"
+                    :class="{ selected: hoveredItem === i, disabled: item.disabled }"
                     @mouseenter="hoveredItem = i"
                     @mouseleave="hoveredItem = -1"
                     @click="handleMenu(item)"
                   >
-                    <span class="gm-arrow">{{
-                      hoveredItem === i ? "▶" : " "
-                    }}</span>
+                    <span class="gm-arrow">{{ hoveredItem === i ? "▶" : " " }}</span>
                     <span class="gm-icon">{{ item.icon }}</span>
                     <div class="gm-text">
                       <span class="gm-name">{{ item.label }}</span>
@@ -176,12 +154,37 @@
                   </div>
                 </div>
 
+                <!-- PANEL INSTRUCCIONES -->
+                <div v-else-if="activePanel === 'instructions'" class="sub-panel">
+                  <div class="sp-header">
+                    <button class="sp-back" @click="activePanel = null">← volver</button>
+                    <span class="sp-title">// INSTRUCCIONES</span>
+                  </div>
+                  <div class="instructions-list">
+                    <div class="inst-block">
+                      <div class="inst-title">🖥️ Explora el sistema</div>
+                      <div class="inst-desc">Abre las apps del escritorio. Cada archivo, correo o nota puede contener una pista.</div>
+                    </div>
+                    <div class="inst-block">
+                      <div class="inst-title">🔑 Encuentra las contraseñas</div>
+                      <div class="inst-desc">Algunas carpetas y apps están bloqueadas. Las claves están escondidas en el propio sistema.</div>
+                    </div>
+                    <div class="inst-block">
+                      <div class="inst-title">🧩 Completa los minijuegos</div>
+                      <div class="inst-desc">Ciertos archivos requieren resolver un puzzle para desbloquearse.</div>
+                    </div>
+                    <div class="inst-block">
+                      <div class="inst-title">🔍 Conecta las pistas</div>
+                      <div class="inst-desc">Fechas, nombres y horas se repiten. Presta atención a los detalles.</div>
+                    </div>
+                    <div class="inst-note">Doble clic para abrir archivos y carpetas.</div>
+                  </div>
+                </div>
+
                 <!-- PANEL OPCIONES -->
                 <div v-else-if="activePanel === 'options'" class="sub-panel">
                   <div class="sp-header">
-                    <button class="sp-back" @click="activePanel = null">
-                      ← volver
-                    </button>
+                    <button class="sp-back" @click="activePanel = null">← volver</button>
                     <span class="sp-title">// CONFIGURACIÓN</span>
                   </div>
                   <div class="opt-row" v-for="opt in options" :key="opt.id">
@@ -208,34 +211,17 @@
                         >
                           <span class="ott" /><span class="oth" />
                         </button>
-                        <span class="opt-val">{{
-                          opt.value ? "ON" : "OFF"
-                        }}</span>
-                      </template>
-                      <template v-else-if="opt.type === 'select'">
-                        <select class="opt-select" v-model="opt.value">
-                          <option
-                            v-for="c in opt.choices"
-                            :key="c.val"
-                            :value="c.val"
-                          >
-                            {{ c.label }}
-                          </option>
-                        </select>
+                        <span class="opt-val">{{ opt.value ? "ON" : "OFF" }}</span>
                       </template>
                     </div>
                   </div>
-                  <button class="sp-save" @click="activePanel = null">
-                    GUARDAR
-                  </button>
+                  <button class="sp-save" @click="activePanel = null">GUARDAR</button>
                 </div>
 
                 <!-- PANEL CRÉDITOS -->
                 <div v-else-if="activePanel === 'credits'" class="sub-panel">
                   <div class="sp-header">
-                    <button class="sp-back" @click="activePanel = null">
-                      ← volver
-                    </button>
+                    <button class="sp-back" @click="activePanel = null">← volver</button>
                     <span class="sp-title">// CRÉDITOS</span>
                   </div>
                   <div class="credits-list">
@@ -245,13 +231,13 @@
                     </div>
                     <div class="credit-divider" />
                     <div class="credit-quote">
-                      "No confíes en todo lo que encuentres.<br />Algunas cosas
-                      parecen pistas y no lo son."
+                      "No confíes en todo lo que encuentres.<br />Algunas cosas parecen pistas y no lo son."
                     </div>
                     <div class="credit-sig">— E.V.</div>
                   </div>
                 </div>
-              </div>
+
+              </div><!-- fin mystery-body -->
 
               <!-- ADJUNTO: lanza el juego -->
               <div class="attachment-zone">
@@ -268,15 +254,9 @@
                     @click="startDownload"
                     :disabled="isDownloading || downloadDone"
                   >
-                    <span v-if="!isDownloading && !downloadDone"
-                      >⬇ Descargar</span
-                    >
+                    <span v-if="!isDownloading && !downloadDone">⬇ Descargar</span>
                     <span v-else-if="isDownloading">
-                      <span class="dl-bar"
-                        ><span
-                          class="dl-fill"
-                          :style="{ width: dlProgress + '%' }"
-                      /></span>
+                      <span class="dl-bar"><span class="dl-fill" :style="{ width: dlProgress + '%' }" /></span>
                       {{ dlProgress }}%
                     </span>
                     <span v-else>✓ Descargado</span>
@@ -355,86 +335,26 @@ const activePanel = ref(null);
 const hoveredItem = ref(-1);
 
 const menuItems = [
-  {
-    id: "new",
-    icon: "▶",
-    label: "NUEVA SESIÓN",
-    desc: "Iniciar desde el principio",
-    key: "ENTER",
-  },
-  {
-    id: "options",
-    icon: "⚙",
-    label: "OPCIONES",
-    desc: "Audio, video, controles",
-    key: null,
-  },
-  {
-    id: "credits",
-    icon: "◈",
-    label: "CRÉDITOS",
-    desc: "Equipo y agradecimientos",
-    key: null,
-  },
-  {
-    id: "exit",
-    icon: "⏻",
-    label: "SALIR",
-    desc: "Cerrar el sistema",
-    key: "ESC",
-  },
+  { id: "new",          icon: "▶", label: "NUEVA SESIÓN",   desc: "Iniciar desde el principio", key: "ENTER" },
+  { id: "instructions", icon: "?", label: "INSTRUCCIONES",  desc: "Cómo jugar",                 key: null },
+  { id: "options",      icon: "⚙", label: "OPCIONES",       desc: "Audio y video",              key: null },
+  { id: "credits",      icon: "◈", label: "CRÉDITOS",       desc: "Equipo y agradecimientos",   key: null },
+  { id: "exit",         icon: "⏻", label: "SALIR",          desc: "Cerrar el sistema",          key: "ESC" },
 ];
 
 const options = ref([
-  {
-    id: "sfx",
-    label: "Volumen efectos",
-    desc: "Sonidos del sistema",
-    type: "slider",
-    value: 70,
-  },
-  {
-    id: "amb",
-    label: "Volumen ambiente",
-    desc: "Música y ambientación",
-    type: "slider",
-    value: 45,
-  },
-  {
-    id: "scanlines",
-    label: "Scanlines",
-    desc: "Efecto CRT sobre pantalla",
-    type: "toggle",
-    value: true,
-  },
-  {
-    id: "glitch",
-    label: "Animación glitch",
-    desc: "Distorsiones visuales",
-    type: "toggle",
-    value: true,
-  },
-  {
-    id: "lang",
-    label: "Idioma",
-    desc: "Idioma del sistema",
-    type: "select",
-    value: "es",
-    choices: [
-      { val: "es", label: "Español" },
-      { val: "en", label: "English" },
-      { val: "??", label: "???" },
-    ],
-  },
+  { id: "volume",    label: "Volumen",           desc: "Sonido general del juego",    type: "slider", value: 70 },
+  { id: "scanlines", label: "Scanlines",         desc: "Efecto CRT sobre pantalla",   type: "toggle", value: true },
+  { id: "glitch",    label: "Animación glitch",  desc: "Distorsiones visuales",       type: "toggle", value: true },
 ]);
 
+// Agrega estas variables que faltan
 const credits = [
   { role: "DISEÑO Y DIRECCIÓN", name: "Proyecto LOSTO" },
   { role: "NARRATIVA", name: "E.V. — periodista desaparecida" },
   { role: "ADMINISTRADOR", name: "M.H." },
   { role: "MOTOR", name: "Vue 3 + Vite" },
 ];
-
 const allInfectLines = [
   { text: "> ejecutando PROYECTO_VALERIA_FINAL.exe...", type: "ok" },
   { text: "> verificando integridad del archivo...", type: "ok" },
@@ -478,8 +398,12 @@ function handleMenu(item) {
     activePanel.value = "credits";
   } else if (item.id === "exit") {
     window.close();
-  }
+  } else if (item.id === "instructions") {
+  activePanel.value = "instructions";
+  } 
 }
+
+
 
 function startDownload() {
   if (isDownloading.value || downloadDone.value) return;
@@ -1552,5 +1476,36 @@ onUnmounted(() => {
   );
   pointer-events: none;
   z-index: 9999;
+}
+
+.instructions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: "Segoe UI", sans-serif;
+}
+.inst-block {
+  padding: 10px 12px;
+  background: #f8f8f8;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+.inst-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+.inst-desc {
+  font-size: 11px;
+  color: #888;
+  line-height: 1.6;
+}
+.inst-note {
+  font-size: 10px;
+  color: #bbb;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  padding-top: 4px;
 }
 </style>
