@@ -5,29 +5,31 @@ export const PASSWORDS = {
   investigacion_privada: "Luna",
   mail_user: "vherrera.mail",
   mail_pass: "Luna14",
-  galeria_creador: "0314",    // añadir
+  galeria_creador: "0314",
 };
-// Flags narrativos que persisten durante la sesión.
-// Añadir nuevos flags aquí al diseñar nuevos niveles.
+
 const INITIAL_FLAGS = {
   // ── Nivel 1 ──
-  readUrgenteLeer: false, // leyó URGENTE_LEER.txt
-  readNotaAlMargen: false, // leyó Nota_al_margen.txt → conecta "Mascotas"
-  readEntrevistaPendiente: false, // leyó Entrevista_Pendiente.docx
-  readNoMires: false, // leyó no_mires.txt (scroll completo)
-  foundOctubreTxt: false, // abrió Octubre.txt desde Basura/
-  unlockedInvestigacion: false, // desbloqueó Investigacion_Privada
+  readUrgenteLeer: false,
+  readNotaAlMargen: false,
+  readEntrevistaPendiente: false,
+  readNoMires: false,
+  foundOctubreTxt: false,
+  unlockedInvestigacion: false,
 
-  // ── Legado (nivel 0 / Explorer original) ──
+  // ── Nivel 2 ──
+  completedAllMinigames: false,
+  readInformeCompleto: false,
+  unlockedDecryptor: false,
+
+  // ── Nivel 3 ──
+  vaultFinalUnlocked: false,
+
+  // ── Legado ──
   bootRead: false,
   logErrorRead: false,
-
-  // ── Nivel 2+ (reservado) ──
-  // readExpediente1410: false,
-  // foundIdentidadCreador: false,
 };
 
-// ── STORE PRINCIPAL ───────────────────────────────────────────────────────────
 export const useSystem = defineStore("system", () => {
   // ── Window Manager ──────────────────────────────────────────────────────────
   const openApps = ref([]);
@@ -54,10 +56,8 @@ export const useSystem = defineStore("system", () => {
   // ── Narrative State ──────────────────────────────────────────────────────────
   const flags = ref({ ...INITIAL_FLAGS });
   const currentLevel = ref(1);
-  const restoredFiles = ref([]); // archivos desbloqueados dinámicamente
+  const restoredFiles = ref([]);
 
-  // Método genérico para setear cualquier flag.
-  // Esto permite que los componentes no conozcan la estructura interna del store.
   function setFlag(key, value = true) {
     if (key in flags.value) {
       flags.value[key] = value;
@@ -66,7 +66,6 @@ export const useSystem = defineStore("system", () => {
     }
   }
 
-  // Atajos de compatibilidad con el código existente
   function markBootRead() {
     setFlag("bootRead");
   }
@@ -74,7 +73,6 @@ export const useSystem = defineStore("system", () => {
     setFlag("logErrorRead");
   }
 
-  // Computed: cuántas pistas del nivel 1 ha encontrado el jugador (0-5)
   const level1Progress = computed(() => {
     const keys = [
       "readUrgenteLeer",
@@ -86,7 +84,7 @@ export const useSystem = defineStore("system", () => {
     return keys.filter((k) => flags.value[k]).length;
   });
 
-  const atmosphereEvents = ref([]); // cola consumida por AtmosphereEngine
+  const atmosphereEvents = ref([]);
   let _evtId = 0;
 
   function triggerEvent(type, payload = {}) {
@@ -94,12 +92,12 @@ export const useSystem = defineStore("system", () => {
     atmosphereEvents.value.push({ id: _evtId, type, payload, consumed: false });
   }
 
-  // Alias de compatibilidad
   function triggerAlert(message) {
     triggerEvent("notification", { message });
     console.warn("[SISTEMA]", message);
   }
 
+  // ── Watches narrativos ───────────────────────────────────────────────────────
   watch(
     () => flags.value.readUrgenteLeer,
     (v) => {
@@ -115,7 +113,6 @@ export const useSystem = defineStore("system", () => {
     () => flags.value.readNoMires,
     (v) => {
       if (!v) return;
-      // El archivo más perturbador del nivel 1 → respuesta más intensa
       triggerEvent("flicker", { times: 3, interval: 200 });
       triggerEvent("scanlines", { duration: 3000 });
       triggerEvent("sound", { clip: "static_noise", volume: 0.3 });
@@ -146,7 +143,6 @@ export const useSystem = defineStore("system", () => {
     () => flags.value.unlockedInvestigacion,
     (v) => {
       if (!v) return;
-      // Desbloqueo del nivel 1 → evento dramático
       triggerEvent("flicker", { times: 5, interval: 150 });
       triggerEvent("glitch", { intensity: "high", duration: 1200 });
       triggerEvent("scanlines", { duration: 5000 });
@@ -155,6 +151,33 @@ export const useSystem = defineStore("system", () => {
         message: "Acceso concedido. Bienvenido, investigador.",
       });
       currentLevel.value = 2;
+    },
+  );
+
+  watch(
+    () => flags.value.unlockedDecryptor,
+    (v) => {
+      if (!v) return;
+      triggerEvent("flicker", { times: 4, interval: 120 });
+      triggerEvent("glitch", { intensity: "high", duration: 1500 });
+      triggerEvent("notification", {
+        message: "Módulo DESENCRIPTADOR instalado.",
+      });
+      currentLevel.value = 3;
+    },
+  );
+
+  watch(
+    () => flags.value.vaultFinalUnlocked,
+    (v) => {
+      if (!v) return;
+      triggerEvent("flicker", { times: 6, interval: 100 });
+      triggerEvent("glitch", { intensity: "high", duration: 2000 });
+      triggerEvent("scanlines", { duration: 6000 });
+      triggerEvent("notification", {
+        message: "Bóveda principal desbloqueada. Acceso total concedido.",
+      });
+      currentLevel.value = 4;
     },
   );
 
@@ -169,13 +192,10 @@ export const useSystem = defineStore("system", () => {
   );
 
   return {
-    // Window manager
     openApps,
     globalZ,
     openApp,
     focusApp,
-
-    // Narrative
     flags,
     currentLevel,
     restoredFiles,
@@ -183,13 +203,9 @@ export const useSystem = defineStore("system", () => {
     level1Progress,
     markBootRead,
     markLogErrorRead,
-
-    // Atmosphere
     atmosphereEvents,
     triggerEvent,
     triggerAlert,
-
-    // Passwords (exportados para que Explorer no hardcodee strings)
     PASSWORDS,
   };
 });
