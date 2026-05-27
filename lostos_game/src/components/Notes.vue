@@ -1,10 +1,7 @@
 <template>
-  <Window
-    title="📝 Notas"
-    @close="$emit('close')"
-    @minimize="$emit('minimize')"
-  >
+  <Window title="📝 Notas" @close="$emit('close')" @minimize="$emit('minimize')">
     <div class="notes-app">
+
       <!-- Sidebar: carpetas -->
       <div class="notes-sidebar">
         <div
@@ -33,9 +30,7 @@
           <div class="note-preview">{{ note.preview }}</div>
           <div class="note-date">{{ note.date }}</div>
         </div>
-        <div v-if="currentNotes.length === 0" class="notes-empty">
-          Sin notas
-        </div>
+        <div v-if="currentNotes.length === 0" class="notes-empty">Sin notas</div>
       </div>
 
       <!-- Vista de nota -->
@@ -47,33 +42,35 @@
         </div>
         <div v-else class="note-placeholder">Selecciona una nota</div>
       </div>
+
     </div>
   </Window>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import Window from "./Window.vue";
+import { ref, computed } from 'vue'
+import Window from './Window.vue'
 
-defineEmits(["close", "minimize"]);
+defineEmits(['close', 'minimize'])
 
-const currentFolder = ref("mascotas");
-const selectedNote = ref(null);
+const currentFolder = ref('mascotas')
+const selectedNote  = ref(null)
 
 const folders = ref([
   {
-    id: "mascotas",
-    icon: "🐾",
-    label: "Mascotas",
+    id: 'mascotas',
+    icon: '🐾',
+    label: 'Mascotas',
     notes: [
       {
         id: 1,
-        title: "Luna",
-        preview: "comida · agua · arena",
-        date: "12/05/2024",
-        body: `comida
+        title: 'Luna',
+        preview: 'comida · agua · próxima vacuna octubre',
+        date: '12/05/2024',
+        body:
+`comida
 agua
-no olvidar arena
+próxima vacuna octubre
 
 Luna come a las 6.
 Nunca se olvida.`,
@@ -81,45 +78,51 @@ Nunca se olvida.`,
     ],
   },
   {
-    id: "personal",
-    icon: "🔒",
-    label: "Personal",
+    id: 'personal',
+    icon: '🔒',
+    label: 'Personal',
     notes: [
       {
         id: 2,
-        title: "Casa",
-        preview: "Nunca volver tarde...",
-        date: "08/05/2024",
-        body: `Nunca volver tarde.
-Cerrar habitación 104.`,
+        title: 'Recordatorio',
+        preview: 'revisar correo antes de abrir carpeta privada',
+        date: '08/05/2024',
+        body:
+`revisar correo antes de abrir carpeta privada`,
       },
     ],
   },
   {
-    id: "recordatorios",
-    icon: "🔔",
-    label: "Recordatorios",
+    id: 'bitacora',
+    icon: '📓',
+    label: 'Bitácora',
     notes: [
       {
         id: 3,
-        title: "respaldo",
-        preview: "Correo guardado por si olvido...",
-        date: "01/03/2022",
-        body: `Correo guardado por si olvido:
+        title: '29_octubre.txt',
+        preview: '03:14 Otra vez esa hora...',
+        date: '29/10/2020',
+        body:
+`03:14 Otra vez esa hora.
 
-vherrera.mail`,
+Revisé el primer informe y coincide exactamente.
+La primera desaparición fue registrada a las 03:14.
+La cámara volvió a captar movimiento a esa misma hora.
+
+No puede seguir repitiéndose.
+Mañana termino esto.`,
       },
     ],
   },
-]);
+])
 
 const currentNotes = computed(
-  () => folders.value.find((f) => f.id === currentFolder.value)?.notes ?? [],
-);
+  () => folders.value.find(f => f.id === currentFolder.value)?.notes ?? []
+)
 
 function selectFolder(id) {
-  currentFolder.value = id;
-  selectedNote.value = null;
+  currentFolder.value = id
+  selectedNote.value  = null
 }
 </script>
 
@@ -127,7 +130,7 @@ function selectFolder(id) {
 .notes-app {
   display: flex;
   height: 460px;
-  font-family: "Segoe UI", sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   font-size: 13px;
   background: #0d0d0d;
 }
@@ -152,25 +155,13 @@ function selectFolder(id) {
   font-size: 12px;
   border-radius: 4px;
   margin: 1px 4px;
-  transition:
-    background 0.15s,
-    color 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
-.notes-folder:hover {
-  background: #1a1a1a;
-  color: #bbb;
-}
-.notes-folder.active {
-  background: #1a3a5c;
-  color: #fff;
-}
+.notes-folder:hover  { background: #1a1a1a; color: #bbb; }
+.notes-folder.active { background: #1a3a5c; color: #fff; }
 
-.folder-icon {
-  font-size: 13px;
-}
-.folder-label {
-  flex: 1;
-}
+.folder-icon  { font-size: 13px; }
+.folder-label { flex: 1; }
 .folder-count {
   font-size: 10px;
   background: #1e1e1e;
@@ -178,10 +169,7 @@ function selectFolder(id) {
   padding: 1px 5px;
   border-radius: 8px;
 }
-.notes-folder.active .folder-count {
-  background: #0f2a40;
-  color: #4a9eff;
-}
+.notes-folder.active .folder-count { background: #0f2a40; color: #4a9eff; }
 
 /* Lista */
 .notes-list {
@@ -198,38 +186,14 @@ function selectFolder(id) {
   cursor: pointer;
   transition: background 0.15s;
 }
-.note-item:hover {
-  background: #161616;
-}
-.note-item.active {
-  background: #1a2a3a;
-}
+.note-item:hover  { background: #161616; }
+.note-item.active { background: #1a2a3a; }
 
-.note-title {
-  font-size: 12px;
-  color: #ccc;
-  font-weight: 600;
-  margin-bottom: 3px;
-}
-.note-preview {
-  font-size: 11px;
-  color: #555;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.note-date {
-  font-size: 10px;
-  color: #333;
-  margin-top: 4px;
-}
+.note-title   { font-size: 12px; color: #ccc; font-weight: 600; margin-bottom: 3px; }
+.note-preview { font-size: 11px; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.note-date    { font-size: 10px; color: #333; margin-top: 4px; }
 
-.notes-empty {
-  padding: 20px;
-  color: #333;
-  text-align: center;
-  font-size: 12px;
-}
+.notes-empty { padding: 20px; color: #333; text-align: center; font-size: 12px; }
 
 /* Vista */
 .note-view {
@@ -247,26 +211,11 @@ function selectFolder(id) {
   font-size: 13px;
 }
 
-.note-content {
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  height: 100%;
-  box-sizing: border-box;
-}
-.note-view-title {
-  font-size: 16px;
-  color: #ccc;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-.note-view-date {
-  font-size: 11px;
-  color: #444;
-  margin-bottom: 16px;
-}
-.note-view-body {
-  font-family: "Courier New", monospace;
+.note-content    { display: flex; flex-direction: column; padding: 16px; height: 100%; box-sizing: border-box; }
+.note-view-title { font-size: 16px; color: #ccc; font-weight: 600; margin-bottom: 4px; }
+.note-view-date  { font-size: 11px; color: #444; margin-bottom: 16px; }
+.note-view-body  {
+  font-family: 'Courier New', monospace;
   font-size: 13px;
   color: #888;
   white-space: pre-wrap;

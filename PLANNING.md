@@ -7,7 +7,8 @@
 ### Tareas
 - [x] Escritura del Lore: Redactar el hilo conductor. Por ejemplo:¿Quién era el dueño? ¿Qué ocultaba? ¿Qué lo mató/hizo desaparecer?
 
-- [x] Mapa de Puzzles: Diseñar el flujo de información.
+- [x] Mapa de Puzzles: Diseñar el flujo de información. 
+  - Se modoficó el flujo de pistas ya que resulto tener muy corta duracioón a la probarlo in game.  
   - Ejemplo: El archivo A contiene la pista para la carpeta B, que contiene el correo C.
 
 - [x] Interfaz Base: Crear el esqueleto HTML/CSS (Escritorio y ventanas básicas).
