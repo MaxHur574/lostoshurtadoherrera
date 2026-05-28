@@ -428,6 +428,8 @@ const lockHints = {
 // ── Items computados ──────────────────────────────────────────────────────────
 const currentItems = computed(() => {
   const base = [...(filesystem[currentPathStr.value] || [])];
+
+  // Archivos restaurados dinámicos (sistema existente)
   const pathMap = { documentos: "Documentos", imagenes: "Fotos" };
   const label = pathMap[currentPathStr.value];
   if (label) {
@@ -443,6 +445,29 @@ const currentItems = computed(() => {
         }),
       );
   }
+
+  // Archivos de pista del desencriptador — aparecen cuando se desbloquea
+  if (system.flags.unlockedDecryptor) {
+    if (currentPathStr.value === "root") {
+      base.push({
+        name: "acceso_parcial.txt",
+        icon: "📄",
+        type: "file",
+        restored: true,
+        content: `SYSTEM://fragment_A\n\nFragmento de clave recuperado (DESENCRIPTADOR).\n\nSegmento [2/3]:\n-M4R\n\nEste fragmento es parte de una clave de desencriptado.\nBusca el segmento restante.`,
+      });
+    }
+    if (currentPathStr.value === "basura") {
+      base.push({
+        name: "~key_fragment.tmp",
+        icon: "📄",
+        type: "file",
+        danger: true,
+        content: `[ARCHIVO TEMPORAL — MARCADO PARA ELIMINACIÓN]\n\nFragmento de clave recuperado (DESENCRIPTADOR).\n\nSegmento [3/3]:\nK3T\n\nCombina ambos segmentos con el formato:\nXXX-XXX-XXX`,
+      });
+    }
+  }
+
   return base;
 });
 

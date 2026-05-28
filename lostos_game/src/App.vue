@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import Taskbar from "./components/Taskbar.vue";
 import Explorer from "./components/Explorer.vue";
 import Mail from "./components/Mail.vue";
@@ -80,6 +80,22 @@ function onVaultOpened() {
   system.setFlag("vaultFinalUnlocked");
   closeApp("decryptor");
 }
+
+// ── Notificación de archivos agregados ────────────────────────────────────────
+const showFileToast = ref(false);
+let toastTimer = null;
+
+watch(
+  () => system.flags.unlockedDecryptor,
+  (v) => {
+    if (!v) return;
+    showFileToast.value = true;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      showFileToast.value = false;
+    }, 7000);
+  },
+);
 </script>
 
 <template>
@@ -154,6 +170,36 @@ function onVaultOpened() {
         @open-notes="openApp('notes')"
         @open-gallery="openApp('gallery')"
       />
+
+      <!-- ── Toast: archivos agregados ── -->
+      <Transition name="toast">
+        <div v-if="showFileToast" class="file-toast">
+          <div class="ft-header">
+            <span class="ft-icon">📂</span>
+            <span class="ft-title">2 archivos agregados al sistema</span>
+            <button class="ft-close" @click="showFileToast = false">✕</button>
+          </div>
+          <div class="ft-files">
+            <div class="ft-file">
+              <span class="ft-file-icon">📄</span>
+              <div class="ft-file-info">
+                <div class="ft-file-name">acceso_parcial.txt</div>
+                <div class="ft-file-path">Mis archivos /</div>
+              </div>
+            </div>
+            <div class="ft-file">
+              <span class="ft-file-icon">📄</span>
+              <div class="ft-file-info">
+                <div class="ft-file-name">~key_fragment.tmp</div>
+                <div class="ft-file-path">Mis archivos / Basura /</div>
+              </div>
+            </div>
+          </div>
+          <div class="ft-progress">
+            <div class="ft-progress-fill" />
+          </div>
+        </div>
+      </Transition>
     </template>
   </div>
 </template>
@@ -272,5 +318,131 @@ html {
 .icon-appear-enter-from {
   opacity: 0;
   transform: scale(0.7) translateY(10px);
+}
+
+/* ── Toast ── */
+.toast-enter-active {
+  transition: all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+.toast-leave-active {
+  transition: all 0.25s ease-in;
+}
+.toast-enter-from {
+  opacity: 0;
+  transform: translateX(24px);
+}
+.toast-leave-to {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+.file-toast {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  width: 290px;
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+  border-left: 3px solid #4a9eff;
+  border-radius: 6px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(74, 158, 255, 0.08);
+  z-index: 9500;
+  overflow: hidden;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.ft-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px 8px 12px;
+}
+.ft-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.ft-title {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ccc;
+  line-height: 1.3;
+}
+.ft-close {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  transition:
+    color 0.15s,
+    background 0.15s;
+  line-height: 1;
+}
+.ft-close:hover {
+  color: #ff4444;
+  background: #1a0000;
+}
+
+.ft-files {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 12px 10px;
+}
+.ft-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  background: #141414;
+  border-radius: 4px;
+  border: 1px solid #1e1e1e;
+}
+.ft-file-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+.ft-file-name {
+  font-size: 11px;
+  color: #aaa;
+  font-family: "Courier New", monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ft-file-path {
+  font-size: 10px;
+  color: #444;
+  margin-top: 1px;
+  font-family: "Courier New", monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ft-progress {
+  height: 2px;
+  background: #1a1a1a;
+  overflow: hidden;
+}
+.ft-progress-fill {
+  height: 100%;
+  background: #4a9eff;
+  animation: toast-drain 7s linear forwards;
+}
+@keyframes toast-drain {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }
 </style>

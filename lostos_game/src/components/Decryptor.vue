@@ -221,7 +221,7 @@ el protocolo automático será desactivado.</pre
             <div class="bov-label" style="margin-top: 12px">
               Acceso manual concedido.
             </div>
-            <button class="bov-open-btn" @click="$emit('vault-opened')">
+            <button class="bov-open-btn" @click="launchEndgame">
               ABRIR BÓVEDA
             </button>
           </div>
@@ -229,16 +229,28 @@ el protocolo automático será desactivado.</pre
       </div>
     </Transition>
   </Teleport>
+
+  <!-- ══ ENDGAME ══ -->
+  <VaultEndgame v-if="showEndgame" />
 </template>
 
 <script setup>
 import { ref, nextTick } from "vue";
 import Window from "./Window.vue";
 import MatrixMinigame from "./minigames/MatrixMinigame.vue";
+import VaultEndgame from "./Vaultendgame.vue";
 import { useSystem } from "../store/system.js";
 
 const emit = defineEmits(["close", "minimize", "vault-opened"]);
 const system = useSystem();
+
+// ── Endgame ───────────────────────────────────────────────────────────────────
+const showEndgame = ref(false);
+
+function launchEndgame() {
+  showBoveda.value = false;
+  showEndgame.value = true;
+}
 
 // ── Fase principal ────────────────────────────────────────────────────────────
 const phase = ref("input");
