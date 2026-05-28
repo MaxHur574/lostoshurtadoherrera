@@ -353,9 +353,9 @@ Contenido:
 
 LOTES ACTIVOS:
 R3D-██-███
-📁 Mis archivos
+⭐ Acceso rápido
 
-backup_deleted.log
+acceso_parcial.txt
 
 Contenido:
 
@@ -385,7 +385,7 @@ PIN_FINAL.txt
 Contenido:
 
 1410
-NIVEL 6 — La Bóveda
+## NIVEL 5 — La Bóveda
 
 PIN:
 
