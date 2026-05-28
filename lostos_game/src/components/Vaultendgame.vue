@@ -182,8 +182,10 @@
 <script setup>
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import gsap from 'gsap'
+import { useAudio } from '../store/audio.js'
 
 const emit = defineEmits(['done'])
+const audio = useAudio()
 
 // ── Refs de DOM ───────────────────────────────────────────────────────────────
 const rootRef        = ref(null)
@@ -267,7 +269,9 @@ const finaleLines = [
 
 // ── Flujo principal ───────────────────────────────────────────────────────────
 function openIdentidadFile() {
-  phase.value = 'reading'
+  audio.play('vault_open') // ← NUEVO
+
+  phase.value      = 'reading'
   showCursor.value = true
 
   readLines.forEach((line, i) => {
@@ -277,7 +281,7 @@ function openIdentidadFile() {
   })
 
   setTimeout(() => {
-    phase.value = 'error'
+    phase.value      = 'error'
     showCursor.value = false
     animateErrorPhase()
   }, readLines.length * 700 + 600)
@@ -286,6 +290,7 @@ function openIdentidadFile() {
 async function animateErrorPhase() {
   await sleep(500)
   errorVisible.value = true
+  audio.play('glitch_hit') // ← NUEVO
 
   await sleep(1400)
   playerDataVisible.value = true
@@ -315,13 +320,12 @@ async function launchAdminChat() {
   startGhostCursor()
 }
 
-// ── CURSOR FANTASMA — secuencia completa con resistencia y jalón ──────────────
+// ── CURSOR FANTASMA ───────────────────────────────────────────────────────────
 async function startGhostCursor() {
   showGhostCursor.value = true
   scanlinesActive.value = true
 
-  // Posición inicial: esquina superior izquierda, lejos del botón
-  cursorX.value = window.innerWidth * 0.15
+  cursorX.value = window.innerWidth  * 0.15
   cursorY.value = window.innerHeight * 0.22
 
   await sleep(300)
@@ -330,14 +334,13 @@ async function startGhostCursor() {
   const btn = transmitBtnRef.value
   if (!btn) { onTransmitClick(); return }
 
-  const rect   = btn.getBoundingClientRect()
+  const rect    = btn.getBoundingClientRect()
   const targetX = rect.left + rect.width  / 2 - 8
   const targetY = rect.top  + rect.height / 2 - 8
 
   const proxy = { x: cursorX.value, y: cursorY.value, skew: 0 }
   const root  = rootRef.value
 
-  // ── FASE A: Inclinación progresiva de la pantalla a lo largo de toda la secuencia
   gsap.to(proxy, {
     duration: 5.2,
     skew: 4,
@@ -347,8 +350,6 @@ async function startGhostCursor() {
     },
   })
 
-  // ── FASE B: El cursor HUYE — corre en dirección opuesta al botón ─────────────
-  // El botón está abajo-derecha, así que huye hacia arriba-izquierda
   const fleeX = window.innerWidth  * 0.72
   const fleeY = window.innerHeight * 0.12
 
@@ -365,7 +366,6 @@ async function startGhostCursor() {
 
   await sleep(900)
 
-  // ── FASE C: Frena — como si algo lo detuviera a la fuerza ────────────────────
   gsap.to(proxy, {
     duration: 0.55,
     x: fleeX * 0.65,
@@ -379,19 +379,16 @@ async function startGhostCursor() {
 
   await sleep(580)
 
-  // ── FASE D: Temblor / tensión — vibración rápida en su sitio ─────────────────
   const shakeOriginX = proxy.x
   const shakeOriginY = proxy.y
 
-  // 14 sacudidas con amplitud decreciente (como luchando pero perdiendo)
   for (let i = 0; i < 14; i++) {
     await sleep(52)
-    const amp = 22 - i * 1.2   // disminuye gradualmente
+    const amp = 22 - i * 1.2
     cursorX.value = shakeOriginX + (Math.random() - 0.5) * amp * 2
     cursorY.value = shakeOriginY + (Math.random() - 0.5) * amp
   }
 
-  // Volver al origen exacto antes del jalón
   cursorX.value = shakeOriginX
   cursorY.value = shakeOriginY
   proxy.x = shakeOriginX
@@ -399,12 +396,10 @@ async function startGhostCursor() {
 
   await sleep(180)
 
-  // ── FASE E: Corrupción de texto en el chat mientras se pierde el control ─────
   corruptChat()
 
   await sleep(350)
 
-  // ── FASE F: Primera atracción — movimiento medio hacia el target ──────────────
   gsap.to(proxy, {
     duration: 0.55,
     x: shakeOriginX + (targetX - shakeOriginX) * 0.42,
@@ -418,7 +413,6 @@ async function startGhostCursor() {
 
   await sleep(520)
 
-  // ── FASE G: Jalón inevitable — aceleración brutal e imparable ────────────────
   gsap.to(proxy, {
     duration: 0.75,
     x: targetX,
@@ -427,7 +421,6 @@ async function startGhostCursor() {
     onUpdate: () => {
       cursorX.value = proxy.x
       cursorY.value = proxy.y
-      // La inclinación se dispara en el tramo final
       const t = gsap.getProperty(proxy, 'progress') || 0
       if (root) {
         const extraSkew = Math.min(proxy.skew + t * 3.5, 8)
@@ -435,7 +428,6 @@ async function startGhostCursor() {
       }
     },
     onComplete: () => {
-      // Limpiar efectos y disparar el click
       scanlinesActive.value = false
       if (root) {
         gsap.to(root, { duration: 0.15, skewX: 0, clearProps: 'transform' })
@@ -445,15 +437,14 @@ async function startGhostCursor() {
   })
 }
 
-// ── Corrupción de caracteres individuales del chat ────────────────────────────
+// ── Corrupción de caracteres ──────────────────────────────────────────────────
 function corruptChat() {
   const textEls = document.querySelectorAll('.ac-text')
 
   textEls.forEach(el => {
     const original = el.textContent
-    const chars = [...original]
+    const chars    = [...original]
 
-    // Envolver cada carácter en su propio span
     el.innerHTML = chars
       .map(c => `<span class="corrupt-char">${c === ' ' ? '&nbsp;' : c}</span>`)
       .join('')
@@ -477,7 +468,6 @@ function corruptChat() {
     })
   })
 
-  // La ventana entera también se sacude
   const chatWin = chatWindowRef.value
   if (chatWin) {
     gsap.to(chatWin, {
@@ -496,17 +486,17 @@ function corruptChat() {
 
 // ── Click en el botón de transmisión ─────────────────────────────────────────
 async function onTransmitClick() {
+  audio.play('transmission') // ← NUEVO
+
   showGhostCursor.value = false
   scanlinesActive.value = false
-  btnPulse.value  = false
-  btnHovered.value = false
+  btnPulse.value        = false
+  btnHovered.value      = false
 
-  // Limpiar cualquier inclinación residual
   if (rootRef.value) {
     gsap.to(rootRef.value, { duration: 0.1, skewX: 0, clearProps: 'transform' })
   }
 
-  // Glitch fuerte en ráfagas
   for (let i = 0; i < 6; i++) {
     await sleep(55)
     glitching.value = !glitching.value
@@ -515,7 +505,6 @@ async function onTransmitClick() {
 
   await sleep(280)
 
-  // Parpadeo rápido
   for (let i = 0; i < 10; i++) {
     await sleep(70)
     glitching.value = !glitching.value
@@ -524,15 +513,13 @@ async function onTransmitClick() {
 
   await sleep(180)
 
-  // Fade a negro
-  fadeToBlack.value  = true
+  fadeToBlack.value   = true
   showAdminChat.value = false
 
   await sleep(1800)
 
-  // Pantalla final
   showFinale.value = true
-  phase.value = ''
+  phase.value      = ''
 
   await sleep(600)
 
@@ -547,7 +534,6 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms))
 }
 
-// Bloquear el mouse del jugador durante la secuencia del cursor fantasma
 function suppressMouseEvents(e) {
   if (showGhostCursor.value) {
     e.stopPropagation()

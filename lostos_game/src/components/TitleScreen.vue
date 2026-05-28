@@ -371,7 +371,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useAudio } from "../store/audio.js";
+const audio = useAudio();
+
+function playDesktopMusic() {
+  audio.startDesktopMusic();
+}
 
 const emit = defineEmits(["started"]);
 
@@ -390,133 +396,80 @@ const activePanel = ref(null);
 const hoveredItem = ref(-1);
 
 const menuItems = [
-  {
-    id: "new",
-    icon: "▶",
-    label: "NUEVA SESIÓN",
-    desc: "Iniciar desde el principio",
-    key: "ENTER",
-  },
-  {
-    id: "instructions",
-    icon: "?",
-    label: "INSTRUCCIONES",
-    desc: "Cómo jugar",
-    key: null,
-  },
-  {
-    id: "options",
-    icon: "⚙",
-    label: "OPCIONES",
-    desc: "Audio y video",
-    key: null,
-  },
-  {
-    id: "credits",
-    icon: "◈",
-    label: "CRÉDITOS",
-    desc: "Equipo y agradecimientos",
-    key: null,
-  },
-  {
-    id: "exit",
-    icon: "⏻",
-    label: "SALIR",
-    desc: "Cerrar el sistema",
-    key: "ESC",
-  },
+  { id: "new",          icon: "▶", label: "NUEVA SESIÓN",  desc: "Iniciar desde el principio", key: "ENTER" },
+  { id: "instructions", icon: "?", label: "INSTRUCCIONES", desc: "Cómo jugar",                  key: null },
+  { id: "options",      icon: "⚙", label: "OPCIONES",      desc: "Audio y video",               key: null },
+  { id: "credits",      icon: "◈", label: "CRÉDITOS",      desc: "Equipo y agradecimientos",    key: null },
+  { id: "exit",         icon: "⏻", label: "SALIR",         desc: "Cerrar el sistema",           key: "ESC" },
 ];
 
 const options = ref([
-  {
-    id: "volume",
-    label: "Volumen",
-    desc: "Sonido general del juego",
-    type: "slider",
-    value: 70,
-  },
-  {
-    id: "scanlines",
-    label: "Scanlines",
-    desc: "Efecto CRT sobre pantalla",
-    type: "toggle",
-    value: true,
-  },
-  {
-    id: "glitch",
-    label: "Animación glitch",
-    desc: "Distorsiones visuales",
-    type: "toggle",
-    value: true,
-  },
+  { id: "volume",    label: "Volumen",           desc: "Sonido general del juego",    type: "slider", value: 70   },
+  { id: "scanlines", label: "Scanlines",         desc: "Efecto CRT sobre pantalla",   type: "toggle", value: true },
+  { id: "glitch",    label: "Animación glitch",  desc: "Distorsiones visuales",       type: "toggle", value: true },
 ]);
 
-// Agrega estas variables que faltan
+// ── Watch del volumen → actualiza Howler en tiempo real ──
+watch(
+  () => options.value.find((o) => o.id === "volume")?.value,
+  (vol) => {
+    if (vol !== undefined) audio.setVolume(vol);
+  }
+);
+
 const credits = [
   { role: "DISEÑO Y DIRECCIÓN", name: "Proyecto LOSTO" },
-  { role: "NARRATIVA", name: "E.V. — periodista desaparecida" },
-  { role: "ADMINISTRADOR", name: "M.H." },
-  { role: "MOTOR", name: "Vue 3 + Vite" },
+  { role: "NARRATIVA",          name: "E.V. — periodista desaparecida" },
+  { role: "ADMINISTRADOR",      name: "M.H." },
+  { role: "MOTOR",              name: "Vue 3 + Vite" },
 ];
+
 const allInfectLines = [
-  { text: "> ejecutando PROYECTO_VALERIA_FINAL.exe...", type: "ok" },
-  { text: "> verificando integridad del archivo...", type: "ok" },
-  { text: "> extrayendo payload...", type: "ok" },
+  { text: "> ejecutando PROYECTO_VALERIA_FINAL.exe...", type: "ok"   },
+  { text: "> verificando integridad del archivo...",    type: "ok"   },
+  { text: "> extrayendo payload...",                    type: "ok"   },
   { text: "[!] proceso desconocido iniciado: valeria.sys", type: "warn" },
   { text: "[!] acceso al sistema de archivos: HABILITADO", type: "warn" },
-  { text: "[!] acceso a cámara: HABILITADO", type: "warn" },
-  { text: "[!] acceso a micrófono: HABILITADO", type: "warn" },
-  { text: "[ERR] firewall desactivado", type: "err" },
+  { text: "[!] acceso a cámara: HABILITADO",            type: "warn" },
+  { text: "[!] acceso a micrófono: HABILITADO",         type: "warn" },
+  { text: "[ERR] firewall desactivado",                 type: "err"  },
   { text: "[ERR] sistema operativo siendo reemplazado...", type: "err" },
   { text: "[ERR] transferencia de datos en curso → [REDACTADO]", type: "err" },
-  { text: "[ERR] control del sistema operativo: PERDIDO", type: "err" },
-  { text: "", type: "ok" },
-  { text: "bienvenida, valeria.", type: "final" },
-  { text: "ya sabemos que estás ahí.", type: "final" },
+  { text: "[ERR] control del sistema operativo: PERDIDO",  type: "err" },
+  { text: "",                                           type: "ok"   },
+  { text: "bienvenida, valeria.",                       type: "final"},
+  { text: "ya sabemos que estás ahí.",                  type: "final"},
 ];
 
 let clockInterval = null;
-let dotsInterval = null;
+let dotsInterval  = null;
 
 function updateClock() {
   const now = new Date();
-  currentTime.value = now.toLocaleTimeString("es-CL", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  currentDate.value = now.toLocaleDateString("es-CL", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  currentTime.value = now.toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" });
+  currentDate.value = now.toLocaleDateString("es-CL",  { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
 function handleMenu(item) {
   if (item.disabled) return;
-  if (item.id === "new") {
-    startDownload();
-  } else if (item.id === "options") {
-    activePanel.value = "options";
-  } else if (item.id === "credits") {
-    activePanel.value = "credits";
-  } else if (item.id === "exit") {
-    window.close();
-  } else if (item.id === "instructions") {
-    activePanel.value = "instructions";
-  }
+  if      (item.id === "new")          startDownload();
+  else if (item.id === "options")      activePanel.value = "options";
+  else if (item.id === "credits")      activePanel.value = "credits";
+  else if (item.id === "exit")         window.close();
+  else if (item.id === "instructions") activePanel.value = "instructions";
 }
 
 function startDownload() {
   if (isDownloading.value || downloadDone.value) return;
   isDownloading.value = true;
-  dlProgress.value = 0;
+  dlProgress.value    = 0;
 
   const dlInterval = setInterval(() => {
     dlProgress.value += Math.random() * 8 + 3;
     if (dlProgress.value >= 100) {
-      dlProgress.value = 100;
+      dlProgress.value    = 100;
       clearInterval(dlInterval);
-      downloadDone.value = true;
+      downloadDone.value  = true;
       isDownloading.value = false;
 
       let dots = 0;
@@ -527,9 +480,7 @@ function startDownload() {
 
       setTimeout(() => {
         shaking.value = true;
-        setTimeout(() => {
-          shaking.value = false;
-        }, 600);
+        setTimeout(() => { shaking.value = false; }, 600);
       }, 800);
 
       setTimeout(() => {
@@ -540,16 +491,12 @@ function startDownload() {
   }, 80);
 }
 
-function playDesktopMusic() {
-  // placeholder — conectar sistema de audio aquí cuando esté disponible
-}
-
 function startInfection() {
-  playDesktopMusic();
+  playDesktopMusic(); // ← arranca el audio aquí
 
-  infecting.value = true;
+  infecting.value          = true;
   visibleInfectLines.value = [];
-  infectProgress.value = 0;
+  infectProgress.value     = 0;
 
   allInfectLines.forEach((line, i) => {
     setTimeout(() => {
@@ -558,22 +505,15 @@ function startInfection() {
     }, i * 220);
   });
 
-  setTimeout(
-    () => {
-      emit("started");
-    },
-    allInfectLines.length * 220 + 800,
-  );
+  setTimeout(() => {
+    emit("started");
+  }, allInfectLines.length * 220 + 800);
 }
 
 function onKey(e) {
   if (!selectedMystery.value) return;
-  if (e.key === "Escape" && activePanel.value) {
-    activePanel.value = null;
-  }
-  if (e.key === "Enter" && !activePanel.value) {
-    startDownload();
-  }
+  if (e.key === "Escape" && activePanel.value)  activePanel.value = null;
+  if (e.key === "Enter"  && !activePanel.value) startDownload();
 }
 
 onMounted(() => {

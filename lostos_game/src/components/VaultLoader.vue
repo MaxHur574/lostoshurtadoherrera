@@ -2,7 +2,7 @@
   <div class="vault-loader">
     <div class="vault-logo">
       <div class="vault-hex">⬡</div>
-      <div class="vault-title">LOSTO<span class="vault-os">OS</span></div>
+      <div class="vault-title">LOST-<span class="vault-os">OS</span></div>
       <div class="vault-sub">Panel de Administración v0.1</div>
     </div>
 

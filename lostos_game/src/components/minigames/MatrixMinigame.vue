@@ -79,7 +79,7 @@ const emit = defineEmits(["success", "fail"]);
 
 // TARGET con valores únicos — 14, 10, 20, 3 (sin repetidos)
 const TARGET = [14, 10, 20, 20, 3, 14];
-const MAX_TIME = 60;
+const MAX_TIME = 90;
 const TOTAL = 24; // 6×4
 const SHUFFLE_INTERVAL = 1800;
 

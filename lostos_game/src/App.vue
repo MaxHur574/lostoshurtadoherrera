@@ -10,6 +10,10 @@ import TitleScreen from "./components/TitleScreen.vue";
 import VaultLoader from "./components/VaultLoader.vue";
 import Decryptor from "./components/Decryptor.vue";
 import { useSystem } from "./store/system.js";
+import { useAudio } from "./store/audio.js";
+const audio = useAudio();
+
+
 
 const system = useSystem();
 
@@ -242,8 +246,22 @@ watch(stage, (v) => {
   if (v === "desktop") {
     scheduleGlitch();
     scheduleAlerts();
+    audio.startDesktopMusic(); // ← AGREGAR ESTA LÍNEA
   }
 });
+
+watch(
+  () => system.atmosphereEvents,
+  (events) => {
+    events
+      .filter((e) => e.type === "sound" && !e.consumed)
+      .forEach((e) => {
+        audio.play(e.payload.clip, e.payload.volume);
+        e.consumed = true;
+      });
+  },
+  { deep: true }
+);
 
 onUnmounted(() => {
   clearTimeout(glitchInterval.value);
