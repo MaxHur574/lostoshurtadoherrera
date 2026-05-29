@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
-import { useSystem, PASSWORDS } from "../src/store/system.js";
+import { useSystem, PASSWORDS } from "../store/system.js";
 
 describe("useSystem — store principal", () => {
   beforeEach(() => {
