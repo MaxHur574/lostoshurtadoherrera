@@ -97,12 +97,12 @@ describe("useSystem — store principal", () => {
 
   // ── Contraseñas ───────────────────────────────────────────────────────────
   describe("PASSWORDS", () => {
-    it('la contraseña de investigacion_privada es "luna"', () => {
+    it('la contraseña de investigacion_privada es "Luna14"', () => {
       expect(PASSWORDS.investigacion_privada).toBe("luna");
     });
 
-    it('la contraseña de privado es "0514"', () => {
-      expect(PASSWORDS.privado).toBe("0514");
+    it('la contraseña de mail es "Luna"', () => {
+      expect(PASSWORDS.mail_pass).toBe("Luna");
     });
   });
 

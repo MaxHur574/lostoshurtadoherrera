@@ -44,6 +44,7 @@ describe("Mail.vue — pantalla de login", () => {
     await wrapper.find('input[type="text"]').setValue("vherrera.mail");
     await wrapper.find('input[type="password"]').setValue("Luna");
     await wrapper.find(".login-btn").trigger("click");
+    await wrapper.vm.$nextTick();
     expect(wrapper.find(".mail-app").exists()).toBe(true);
     expect(wrapper.find(".login-screen").exists()).toBe(false);
   });
