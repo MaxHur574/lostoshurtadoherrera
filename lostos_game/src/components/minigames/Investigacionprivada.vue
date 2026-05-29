@@ -276,6 +276,7 @@ import RecoveryMinigame from "./RecoveryMinigame.vue";
 import NoteViewer from "./NoteViewer.vue";
 import { useMinigames } from "../../store/minigames.js";
 import { useSystem } from "../../store/system.js";
+import { useAudio } from "../../store/audio.js";
 
 const emit = defineEmits(["close", "minimize", "decryptor-unlocked"]);
 
