@@ -28,7 +28,13 @@
       </div>
 
       <!-- Botón ajustes -->
-      <div class="settings-btn" @click.stop="showSettings = !showSettings" title="Ajustes">⚙</div>
+      <div
+        class="settings-btn"
+        @click.stop="showSettings = !showSettings"
+        title="Ajustes"
+      >
+        ⚙
+      </div>
 
       <div class="taskbar-clock">
         <div class="clock-time">{{ time }}</div>
@@ -63,7 +69,7 @@
           >
             <span class="stt" /><span class="sth" />
           </button>
-          <span class="sp-val">{{ scanlines ? 'ON' : 'OFF' }}</span>
+          <span class="sp-val">{{ scanlines ? "ON" : "OFF" }}</span>
         </div>
 
         <div class="sp-row">
@@ -75,10 +81,12 @@
           >
             <span class="stt" /><span class="sth" />
           </button>
-          <span class="sp-val">{{ glitch ? 'ON' : 'OFF' }}</span>
+          <span class="sp-val">{{ glitch ? "ON" : "OFF" }}</span>
         </div>
 
-        <button class="sp-close-btn" @click="showSettings = false">CERRAR</button>
+        <button class="sp-close-btn" @click="showSettings = false">
+          CERRAR
+        </button>
       </div>
     </Transition>
 
@@ -91,31 +99,46 @@
         <div class="start-items">
           <div
             class="start-item"
-            @click="emit('open-explorer'); showStart = false;"
+            @click="
+              emit('open-explorer');
+              showStart = false;
+            "
           >
             <span>📁</span> Mis archivos
           </div>
           <div
             class="start-item"
-            @click="emit('open-mail'); showStart = false;"
+            @click="
+              emit('open-mail');
+              showStart = false;
+            "
           >
             <span>📧</span> Correo
           </div>
           <div
             class="start-item"
-            @click="emit('open-browser'); showStart = false;"
+            @click="
+              emit('open-browser');
+              showStart = false;
+            "
           >
             <span>🌐</span> Navegador
           </div>
           <div
             class="start-item"
-            @click="emit('open-notes'); showStart = false;"
+            @click="
+              emit('open-notes');
+              showStart = false;
+            "
           >
             <span>📝</span> Notas
           </div>
           <div
             class="start-item"
-            @click="emit('open-gallery'); showStart = false;"
+            @click="
+              emit('open-gallery');
+              showStart = false;
+            "
           >
             <span>🖼️</span> Galería
           </div>
@@ -141,18 +164,19 @@ const emit = defineEmits([
   "open-notes",
   "open-gallery",
   "restore-app",
+  "minimize-app", // ← nuevo
 ]);
 
 const system = useSystem();
-const audio  = useAudio();
+const audio = useAudio();
 
-const showStart    = ref(false);
+const showStart = ref(false);
 const showSettings = ref(false);
 
 // ── Ajustes ───────────────────────────────────────────────────────────────────
-const volume    = ref(70);
+const volume = ref(70);
 const scanlines = ref(true);
-const glitch    = ref(true);
+const glitch = ref(true);
 
 function onVolumeChange() {
   audio.setVolume(volume.value);
@@ -161,8 +185,8 @@ function onVolumeChange() {
 // Cerrar panel si se hace click fuera
 function onClickOutside(e) {
   if (
-    !e.target.closest('.settings-panel') &&
-    !e.target.closest('.settings-btn')
+    !e.target.closest(".settings-panel") &&
+    !e.target.closest(".settings-btn")
   ) {
     showSettings.value = false;
   }
@@ -177,11 +201,7 @@ function toggleStart() {
 }
 
 function handleAppClick(app) {
-  if (app.minimized || app.active) {
-    emit("restore-app", app.id);
-  } else {
-    system.focusApp(app.id);
-  }
+  emit("restore-app", app.id);
 }
 
 onMounted(() => {
@@ -219,7 +239,9 @@ onUnmounted(() => {
   transition: background 0.15s;
   flex-shrink: 0;
 }
-.start-btn:hover { background: #1a1a1a; }
+.start-btn:hover {
+  background: #1a1a1a;
+}
 .start-icon {
   font-size: 20px;
   color: #4a9eff;
@@ -244,11 +266,16 @@ onUnmounted(() => {
   color: #888;
   font-size: 12px;
   font-family: "Segoe UI", sans-serif;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   border-bottom: 2px solid transparent;
   height: 36px;
 }
-.taskbar-app:hover { background: #1a1a1a; color: #ccc; }
+.taskbar-app:hover {
+  background: #1a1a1a;
+  color: #ccc;
+}
 .taskbar-app.active {
   background: #1a1a1a;
   color: #fff;
@@ -259,9 +286,13 @@ onUnmounted(() => {
   border-bottom-color: #444;
   border-bottom-style: dashed;
 }
-.taskbar-app.minimized:hover { opacity: 1; }
+.taskbar-app.minimized:hover {
+  opacity: 1;
+}
 
-.app-icon { font-size: 14px; }
+.app-icon {
+  font-size: 14px;
+}
 .app-label {
   font-size: 11px;
   max-width: 80px;
@@ -293,8 +324,13 @@ onUnmounted(() => {
   animation: blink 2s infinite;
 }
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.2; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
 }
 
 /* ── Botón ajustes ── */
@@ -304,10 +340,15 @@ onUnmounted(() => {
   cursor: pointer;
   padding: 4px 6px;
   border-radius: 4px;
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
   line-height: 1;
 }
-.settings-btn:hover { color: #ccc; background: #1a1a1a; }
+.settings-btn:hover {
+  color: #ccc;
+  background: #1a1a1a;
+}
 
 /* ── Panel ajustes ── */
 .settings-panel {
@@ -400,10 +441,18 @@ onUnmounted(() => {
   background: #444;
   border-radius: 50%;
   display: block;
-  transition: transform 0.2s, background 0.2s;
+  transition:
+    transform 0.2s,
+    background 0.2s;
 }
-.sp-toggle.on .stt { background: #1a0000; border-color: #cc3333; }
-.sp-toggle.on .sth { transform: translateX(16px); background: #cc3333; }
+.sp-toggle.on .stt {
+  background: #1a0000;
+  border-color: #cc3333;
+}
+.sp-toggle.on .sth {
+  transform: translateX(16px);
+  background: #cc3333;
+}
 
 .sp-close-btn {
   background: #111;
@@ -418,13 +467,26 @@ onUnmounted(() => {
   transition: all 0.15s;
   margin-top: 2px;
 }
-.sp-close-btn:hover { color: #ccc; border-color: #444; }
+.sp-close-btn:hover {
+  color: #ccc;
+  border-color: #444;
+}
 
 /* Transición panel */
-.settings-panel-enter-active { transition: all 0.2s cubic-bezier(0.34, 1.2, 0.64, 1); }
-.settings-panel-leave-active { transition: all 0.15s ease-in; }
-.settings-panel-enter-from   { opacity: 0; transform: translateY(10px); }
-.settings-panel-leave-to     { opacity: 0; transform: translateY(10px); }
+.settings-panel-enter-active {
+  transition: all 0.2s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+.settings-panel-leave-active {
+  transition: all 0.15s ease-in;
+}
+.settings-panel-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.settings-panel-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
 
 .taskbar-clock {
   text-align: right;
@@ -472,7 +534,9 @@ onUnmounted(() => {
   color: #777;
   font-family: "Segoe UI", sans-serif;
 }
-.start-items { padding: 6px 0; }
+.start-items {
+  padding: 6px 0;
+}
 
 .start-item {
   display: flex;
@@ -483,21 +547,48 @@ onUnmounted(() => {
   color: #aaa;
   font-family: "Segoe UI", sans-serif;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
-.start-item:hover { background: #1a1a1a; color: #fff; }
-.start-item.danger:hover { background: #2a0000; color: #ff4444; }
-.start-divider { border-top: 1px solid #1a1a1a; margin: 4px 0; }
+.start-item:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+.start-item.danger:hover {
+  background: #2a0000;
+  color: #ff4444;
+}
+.start-divider {
+  border-top: 1px solid #1a1a1a;
+  margin: 4px 0;
+}
 
-.start-menu-enter-active { animation: slideUp 0.2s ease-out; }
-.start-menu-leave-active { animation: slideDown 0.15s ease-in forwards; }
+.start-menu-enter-active {
+  animation: slideUp 0.2s ease-out;
+}
+.start-menu-leave-active {
+  animation: slideDown 0.15s ease-in forwards;
+}
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes slideDown {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(10px); }
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 </style>

@@ -2,9 +2,9 @@ import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 
 export const PASSWORDS = {
-  investigacion_privada: "Luna",
+  investigacion_privada: "Luna14",
   mail_user: "vherrera.mail",
-  mail_pass: "Luna14",
+  mail_pass: "Luna",
   galeria_creador: "0314",
 };
 

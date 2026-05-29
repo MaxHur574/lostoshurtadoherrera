@@ -378,6 +378,13 @@ function onWin(key) {
   activeGame.value = null;
   const nota = notas.find((n) => n.key === key);
   if (nota) openedNote.value = nota;
+
+  // si ya están los 3 desbloqueados, reproducir sonido
+  const allDone = notas.every((n) => mg.unlocked[n.key]);
+  if (allDone) {
+    const audio = useAudio();
+    audio.play("unlock_horror");
+  }
 }
 
 // ── Informe completo ──────────────────────────────────────────────────────────

@@ -219,7 +219,7 @@ const pages = {
           <div style="color:#555;font-size:11px;margin-bottom:10px;">PISTA DE CONTRASEÑA</div>
           <div style="color:#666;font-size:12px;line-height:1.8;">
             La contraseña fue definida por el usuario.<br/>
-            <span style="color:#444;">Pista:</span> <span style="color:#777;font-style:italic;">nombre + número habitual</span><br/>
+            <span style="color:#444;">Pista:</span> <span style="color:#777;font-style:italic;">nombre </span><br/>
             <span style="color:#333;font-size:11px;">(El sistema no puede mostrar contraseñas por seguridad.)</span>
           </div>
         </div>

@@ -369,6 +369,13 @@ const filesystem = {
       type: "file",
       content: "[Registro de usuario — binario]",
     },
+    {
+      name: "14.tmp",
+      icon: "📄",
+      type: "file",
+      content:
+        "No olvides revisar el día 14.\nTodo empezó el 14.\nNada antes del 14 importa.",
+    },
   ],
   investigacion: [
     {

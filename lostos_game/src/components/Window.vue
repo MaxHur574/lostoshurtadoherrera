@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted } from "vue";
 import interact from "interactjs";
 import gsap from "gsap";
 import { useSystem } from "../store/system.js";
@@ -57,13 +57,36 @@ onMounted(() => {
   });
   bringToFront();
 
+  // ── DRAG ─────────────────────────────────────────────────────────────────
   interact(titleBar.value).draggable({
     listeners: {
       move(event) {
         if (isMaximized.value) return;
         const target = win.value;
-        const x = (parseFloat(target.dataset.x) || 0) + event.dx;
-        const y = (parseFloat(target.dataset.y) || 0) + event.dy;
+
+        let x = (parseFloat(target.dataset.x) || 0) + event.dx;
+        let y = (parseFloat(target.dataset.y) || 0) + event.dy;
+
+        const TASKBAR = 44; // altura taskbar
+        const TITLE_H = 36; // altura barra de título (siempre visible)
+        const MIN_VIS = 80; // px mínimos visibles horizontalmente
+
+        // posición absoluta base (sin el translate)
+        const rect = target.getBoundingClientRect();
+        const baseLeft = rect.left - (parseFloat(target.dataset.x) || 0);
+        const baseTop = rect.top - (parseFloat(target.dataset.y) || 0);
+
+        // límites verticales
+        const minY = -baseTop; // no salir por arriba
+        const maxY = window.innerHeight - TASKBAR - TITLE_H - baseTop; // no hundirse bajo taskbar
+
+        // límites horizontales (siempre dejar MIN_VIS px visibles)
+        const minX = -baseLeft - target.offsetWidth + MIN_VIS; // borde derecho visible
+        const maxX = window.innerWidth - baseLeft - MIN_VIS; // borde izquierdo visible
+
+        x = Math.min(Math.max(x, minX), maxX);
+        y = Math.min(Math.max(y, minY), maxY);
+
         target.style.transform = `translate(${x}px, ${y}px)`;
         target.dataset.x = x;
         target.dataset.y = y;
@@ -71,19 +94,25 @@ onMounted(() => {
     },
   });
 
+  // ── RESIZE ───────────────────────────────────────────────────────────────
   interact(win.value).resizable({
     edges: {
       right: ".resize-r",
       bottom: ".resize-b",
       bottomRight: ".resize-rb",
     },
+    modifiers: [
+      interact.modifiers.restrictSize({
+        min: { width: 300, height: 200 },
+        max: { width: window.innerWidth, height: window.innerHeight - 44 },
+      }),
+    ],
     listeners: {
       move(event) {
         if (isMaximized.value) return;
-        Object.assign(event.target.style, {
-          width: `${event.rect.width}px`,
-          height: `${event.rect.height}px`,
-        });
+        const target = event.target;
+        target.style.width = `${event.rect.width}px`;
+        target.style.height = `${event.rect.height}px`;
       },
     },
   });
@@ -108,12 +137,13 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Mantén tus estilos originales aquí, funcionan perfecto */
 .window {
   position: absolute;
   top: 50px;
   left: 50px;
+  width: 680px;
   min-width: 300px;
+  min-height: 200px;
   background: #0d0d0d;
   border: 1px solid #333;
   display: flex;
@@ -127,11 +157,24 @@ onMounted(() => {
   padding: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   cursor: move;
+  flex-shrink: 0;
+  height: 36px;
+  box-sizing: border-box;
+}
+.title-text {
+  font-size: 12px;
+  color: #aaa;
+  font-family: "Segoe UI", sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .window-controls {
   display: flex;
   gap: 5px;
+  flex-shrink: 0;
 }
 .ctrl-btn {
   border: none;
@@ -139,13 +182,22 @@ onMounted(() => {
   color: #aaa;
   cursor: pointer;
   padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  transition: background 0.15s;
+}
+.ctrl-btn:hover {
+  background: #333;
+  color: #fff;
 }
 .ctrl-btn.close:hover {
   background: #c33;
+  color: #fff;
 }
 .content {
   flex: 1;
   overflow: auto;
+  min-height: 0;
 }
 .resize-handle {
   position: absolute;

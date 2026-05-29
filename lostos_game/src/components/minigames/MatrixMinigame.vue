@@ -331,24 +331,24 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0d0d0d;
-  border: 1px solid #141414;
+  background: #0f0f14;
+  border: 1px solid #1e1e28;
   border-radius: 4px;
   cursor: pointer;
   transition:
-    background 0.15s,
-    border-color 0.15s;
+    background 0.12s,
+    border-color 0.12s;
 }
 .grid-cell:hover {
-  background: #161616;
-  border-color: #222;
+  background: #18181f;
+  border-color: #2e2e3e;
 }
-
 .cell-val {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
-  color: #3a3a3a;
+  color: #7a7a9a;
   pointer-events: none;
+  text-shadow: 0 0 8px rgba(130, 130, 180, 0.25);
 }
 
 /* Correcto — flash verde */
