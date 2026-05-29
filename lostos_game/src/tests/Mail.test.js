@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createPinia } from "pinia";
 import Mail from "../components/Mail.vue";
-// Mock de Window.vue para aislar el componente
+
 vi.mock("../components/Window.vue", () => ({
   default: {
     name: "Window",
@@ -44,7 +44,6 @@ describe("Mail.vue — pantalla de login", () => {
     await wrapper.find('input[type="text"]').setValue("vherrera.mail");
     await wrapper.find('input[type="password"]').setValue("Luna");
     await wrapper.find(".login-btn").trigger("click");
-    await wrapper.vm.$nextTick();
     expect(wrapper.find(".mail-app").exists()).toBe(true);
     expect(wrapper.find(".login-screen").exists()).toBe(false);
   });
@@ -66,8 +65,10 @@ describe("Mail.vue — bandeja de entrada", () => {
       global: { plugins: [createPinia()] },
     });
     await wrapper.find('input[type="text"]').setValue("vherrera.mail");
-    await wrapper.find('input[type="password"]').setValue("Luna104");
+    await wrapper.find('input[type="password"]').setValue("Luna");
     await wrapper.find(".login-btn").trigger("click");
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
     return wrapper;
   }
 
