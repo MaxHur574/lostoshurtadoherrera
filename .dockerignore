@@ -1,0 +1,9 @@
+node_modules
+lostos_game/node_modules
+lostos_game/.vite
+lostos_game/dist
+.git
+.gitignore
+*.md
+.vscode
+*.log

@@ -7,9 +7,11 @@ WORKDIR /app
 
 COPY lostos_game/package.json lostos_game/pnpm-lock.yaml ./
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --shamefully-hoist
 
 COPY lostos_game/ .
+
+RUN pnpm install --shamefully-hoist
 
 RUN pnpm run build
 

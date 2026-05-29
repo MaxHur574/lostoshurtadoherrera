@@ -172,7 +172,7 @@
           <div class="finale-content">
             <div class="finale-logo">⬡</div>
             <div class="finale-title">
-              LOSTO<span class="finale-os">OS</span>
+              LOST-<span class="finale-os">OS</span>
             </div>
             <div class="finale-divider">
               ══════════════════════════════════════
