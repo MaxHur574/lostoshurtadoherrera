@@ -28,20 +28,31 @@
 ## Semana 3: Atmósfera y Eventos Dinámicos (18 May - 24 May)
 - Objetivo: Convertir un simulador de archivos en una experiencia de terror.
 
-- [ ] Manager de Eventos: Programar los "triggers" (disparadores). Si el jugador lee el archivo "autopsia.pdf", se dispara un sonido de respiración.
+- [x] Manager de Eventos: Programar los "triggers" (disparadores). Si el jugador lee el archivo "autopsia.pdf", se dispara un sonido de respiración.
 
-- [ ] Efectos Visuales: Glitches, cambios de fuente, y el parpadeo de la interfaz.
+- [x] Efectos Visuales: Glitches, cambios de fuente, y el parpadeo de la interfaz.
 
-- [ ] Aplicaciones Especiales: Programar el correo electrónico (que se va llenando de mensajes nuevos mientras juegas) y el visor de fotos perturbadoras.
+- [x] Aplicaciones Especiales: Programar el correo electrónico (que se va llenando de mensajes nuevos mientras juegas) y el visor de fotos perturbadoras.
 
 
 ## Semana 4: Audio, Pulido y Final (25 May - 28 May)
 - Objetivo: Inmersión total.
 
-- [ ] Diseño Sonoro: Añadir el ambiente low-fi, sonidos de disco duro procesando y efectos de sonido para los sustos.
+- [x] Diseño Sonoro: Añadir el ambiente low-fi, sonidos de disco duro procesando y efectos de sonido para los sustos.
 
-- [ ] Finales: Programar la secuencia final (el "clímax" de la historia).
+- [x] Finales: Programar la secuencia final (el "clímax" de la historia).
 
-- [ ] QA & Debug: Testear que ninguna combinación de ventanas abiertas rompa la lógica del juego.
+- [x] QA & Debug: Testear que ninguna combinación de ventanas abiertas rompa la lógica del juego.
 
-- [ ] Ajustes de dificultad: Asegurarse de que las pistas del lore no sean ni muy obvias ni imposibles.
+- [x] Ajustes de dificultad: Asegurarse de que las pistas del lore no sean ni muy obvias ni imposibles.
+      
+## Mejoras
+- [ ] Guardado de progreso.
+- [ ] Mejorar configuración del juego (más opciones como por ejemplo deficultades para minijuegos)
+- [ ] Agregado de tutorial al principio del juego para entender la jugabilidad y dinámica.
+- [ ] Easter eggs.
+- [ ] Sistema de logros.
+- [ ] Agregado de más minijuegos.
+- [ ] Agregado de "IA" como personaje que da consejos en el gameplay.
+- [ ] Agregar ramificaciones en los archivos mas importantes.
+- [ ] 0,2 decimas por quedar terceros (medalla de bronce).
