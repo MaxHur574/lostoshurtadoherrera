@@ -64,3 +64,22 @@ Los correos revelan fragmentos de la historia y pistas hacia el código de desen
 Al desencriptar el archivo final, se revela el lore completo del sistema.
 El juego no tiene un "fin" tradicional — es una experiencia narrativa de exploración.
 
+---
+
+## Mejoras y correcciones
+Inicio de sesión con terceros y guardado de progreso.
+Agregar un tutorial explicativo sobre las mecanicas del juego
+Agregar mas minijuegos al juego
+ranking de tiempo de completado
+agregado de endpoints 
+
+---
+
+## Arquitectura fullstack
+### Backend 
+Auth0: Autenticacion de tokens para login con terceros.
+MongoDB: Base de datos para guardar progreso de los jugadores.
+Node.js: Entorno para ejecutar JS en un servidor.
+Express.js: Framework para Node.js que simplifica su uso.
+
+
