@@ -50,9 +50,5 @@
 - [ ] Guardado de progreso.
 - [ ] Mejorar configuración del juego (más opciones como por ejemplo deficultades para minijuegos)
 - [ ] Agregado de tutorial al principio del juego para entender la jugabilidad y dinámica.
-- [ ] Easter eggs.
-- [ ] Sistema de logros.
 - [ ] Agregado de más minijuegos.
-- [ ] Agregado de "IA" como personaje que da consejos en el gameplay.
-- [ ] Agregar ramificaciones en los archivos mas importantes.
-- [ ] 0,2 decimas por quedar terceros (medalla de bronce).
+- [x] 0,25 decimas por quedar terceros (medalla de bronce).
