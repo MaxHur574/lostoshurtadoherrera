@@ -91,6 +91,8 @@ El juego no tiene un "fin" tradicional — es una experiencia narrativa de explo
 
 - Express.js: Framework para Node.js que simplifica su uso.
 
+- Mongoose: Actua como intermediario entre Express y MongoDB, facilitando la conexión y gestión de datos con MongoDB.
+
 ---
 
 ### Endpoints
@@ -98,9 +100,9 @@ El juego no tiene un "fin" tradicional — es una experiencia narrativa de explo
 
 - POST /oauth/token : Entrega el access token para luego verificar que sea válido.
 
-- GET /.well-known/jwks.json : verifica que los tokens  realmente fueron emitidos por Auth0 y no falsificados.
+- GET /.well-known/jwks.json : verifica que los tokens realmente fueron emitidos por Auth0 y no falsificados.
 
-- GET /v2/logout : Permite cerrar la sesión del usuario y finalizar su autenticación en Auth0
+- GET /v2/logout : Permite cerrar la sesión del usuario y finalizar su autenticación en Auth0.
 
 - POST /login : Recibe el token y verifica en la base de datos de MongoDb la existencia del usuario. 
 
