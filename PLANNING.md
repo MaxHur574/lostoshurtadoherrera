@@ -52,3 +52,36 @@
 - [ ] Agregado de tutorial al principio del juego para entender la jugabilidad y dinámica.
 - [ ] Agregado de más minijuegos.
 - [x] 0,25 decimas por quedar terceros (medalla de bronce).
+
+---
+
+## Semana 5: Agregar autenticación y progreso (16 Jun - 23 Jun)
+- Objetivo : lograr login con terceros funcionando y progreso persistente.
+
+- [ ] Configurar Auth0 en el backend con Express.js.
+
+- [ ] Crear endpoints /login y /progress.
+
+- [ ] Guardar progreso en MongoDB (usuario, minijuegos completados, tiempo).
+
+- [ ] Integrar login en frontend Vue.
+
+## Semana 6: Agregar tutorial y minijuegos (23 Jun - 25 Jun)
+- Objetivo : agregar tutorial visible al inicio + nuevos minijuegos jugables.
+
+- [ ] Implementar un tutorial interactivo en Vue (overlay o pasos guiados).
+
+- [ ] Añadir los minijuegos nuevos.
+
+- [ ] Conectar minijuegos al sistema de progreso (guardar resultados).
+
+## Semana 7: Agregar ranking y endpoints exrtra (25 Jun - 2 Jul)
+- Objetivo : lograr ranking visible y backend estable.
+
+- [ ] Endpoint /ranking en Express.js para tiempos de completado.
+
+- [ ] Guardar y ordenar tiempos en MongoDB.
+
+- [ ] Mostrar ranking en frontend con tabla ordenada.
+
+- [ ] Revisar y pulir todos los endpoints (login, progreso, ranking).

@@ -9,6 +9,7 @@ Framework: Vue.js 3. Framework elegido entre 3 opciones disponibles porque es el
 
 ## Estructura de carpetas propuesta
 
+```
 LostOs_proyect/
 ├── .github/
 │   └── workflows/            # Configuración CI/CD
@@ -26,15 +27,16 @@ LostOs_proyect/
 ├── DESIGN.md
 ├── PLANNING.md
 └── README.md
+```
 
 ---
 
 ## Dependencias principales
 
-Pinia: Es la biblioteca oficial para gestionar estado de Vue. Pinia tine una estructura mas simple y flexible que Vuex 5, además ocupa typescript de forma nativa, a diferencia de Vuex que originalmente se diseñó para JavaScript y luego se agregó TypeScript.  
-GSAP: Sirve para poder hacer las animaciones como gliych u otras, con la ventaja de que nos deja realizar Timelines.
-Interact: Permite el Drag y Drop, resize, ya que algunas librerias como Draggable y Sortable no permiten el Drag y Drop (Mover libremente una ventana) y para el tipo de juego que queremos hacer Interact nos da más funciones para más realismo.
-Howler.js: Funciona igual en todos los navegadores, verbosidad más ligera, arquitectura más sencilla de utilizar. Ideal para juegos 2D.
+- Pinia: Es la biblioteca oficial para gestionar estado de Vue. Pinia tine una estructura mas simple y flexible que Vuex 5, además ocupa typescript de forma nativa, a diferencia de Vuex que originalmente se diseñó para JavaScript y luego se agregó TypeScript.  
+- GSAP: Sirve para poder hacer las animaciones como gliych u otras, con la ventaja de que nos deja realizar Timelines.
+- Interact: Permite el Drag y Drop, resize, ya que algunas librerias como Draggable y Sortable no permiten el Drag y Drop (Mover libremente una ventana) y para el tipo de juego que queremos hacer Interact nos da más funciones para más realismo.
+- Howler.js: Funciona igual en todos los navegadores, verbosidad más ligera, arquitectura más sencilla de utilizar. Ideal para juegos 2D.
 
 ---
 
@@ -67,19 +69,49 @@ El juego no tiene un "fin" tradicional — es una experiencia narrativa de explo
 ---
 
 ## Mejoras y correcciones
-Inicio de sesión con terceros y guardado de progreso.
-Agregar un tutorial explicativo sobre las mecanicas del juego
-Agregar mas minijuegos al juego
-ranking de tiempo de completado
-agregado de endpoints 
+- Inicio de sesión con terceros y guardado de progreso.
+
+- Agregar un tutorial explicativo sobre las mecanicas del juego
+
+- Agregar mas minijuegos al juego
+
+- ranking de tiempo de completado
+
+- agregado de endpoints 
 
 ---
 
 ## Arquitectura fullstack
 ### Backend 
-Auth0: Autenticacion de tokens para login con terceros.
-MongoDB: Base de datos para guardar progreso de los jugadores.
-Node.js: Entorno para ejecutar JS en un servidor.
-Express.js: Framework para Node.js que simplifica su uso.
+- Auth0: Autenticacion de tokens para login con terceros.
+
+- MongoDB: Base de datos para guardar progreso de los jugadores.
+
+- Node.js: Entorno para ejecutar JS en un servidor.
+
+- Express.js: Framework para Node.js que simplifica su uso.
+
+---
+
+### Endpoints
+- GET /authorize : Se utiliza cuando el jugador presiona "Iniciar sesión". inicia el proceso de autenticación con el proveedor.
+
+- POST /oauth/token : Entrega el access token para luego verificar que sea válido.
+
+- GET /.well-known/jwks.json : verifica que los tokens  realmente fueron emitidos por Auth0 y no falsificados.
+
+- GET /v2/logout : Permite cerrar la sesión del usuario y finalizar su autenticación en Auth0
+
+- POST /login : Recibe el token y verifica en la base de datos de MongoDb la existencia del usuario. 
+
+- GET /progress : Recupera el progreso de avance guardado del jugador.
+
+- POST /progress : Guarda o actualiza el progreso del jugador en la base de datos de MongoDB.
+
+- GET /ranking : Obtener la lista de jugadores ordenados por tiempo de completado.
+
+- POST /ranking : Guarda el tiempo que se demora en completar el juego el jugador, y lo actualiza en caso de mejorar marca.
+
+
 
 
