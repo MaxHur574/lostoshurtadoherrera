@@ -13,20 +13,48 @@ Framework: Vue.js 3. Framework elegido entre 3 opciones disponibles porque es el
 LostOs_proyect/
 ├── .github/
 │   └── workflows/            # Configuración CI/CD
-├── src/
-│   ├── App.vue               # Componente raíz
-│   ├── main.js               # Entry point
-│   ├── components/           # Componentes .vue de cada ventana y app
-│   ├── store/                # Estado global con Pinia
-│   └── assets/
-│       ├── images/           # Imágenes del juego
-│       └── audios/           # Efectos de sonido
-├── Dockerfile
-├── .gitignore
-├── pnpm-lock.yaml
-├── DESIGN.md
-├── PLANNING.md
-└── README.md
+│
+├── frontend/                 # Aplicación cliente con Vue
+│   ├── public/               # Archivos estáticos (favicon, index.html)
+│   ├── src/
+│       ├── tests/
+│       │    
+│   │   ├── App.vue           # Componente raíz
+│   │   ├── main.js           # Entry point Vue
+│   │   ├── components/       # Componentes .vue
+│   │   ├── store/            # Estado global (Pinia)
+│   │   └── assets/
+│   │       ├── images/       # Imágenes del juego
+│   │       └── audios/       # Sonidos
+│   ├── vite.config.js        # Configuración Vite
+│   ├── package.json          # Dependencias frontend
+│   ├── pnpm-lock.yaml
+│   └── Dockerfile
+│
+├── backend/                  # Servidor con Node/Express
+│   ├── src/
+│   │   ├── config/           # Configuración (MongoDB, Auth0, env)
+│   │   │   ├── db.js
+│   │   │   └── auth.js
+│   │   ├── models/           # Esquemas Mongoose (User, Game, Score)
+│   │   ├── controllers/      # Lógica de negocio
+│   │   ├── routes/           # Endpoints Express
+│   │   ├── middleware/       # Autenticación, validaciones, errores
+│   │   ├── services/         # Axios y servicios externos
+│   │   ├── utils/            # Helpers y funciones comunes
+│   │   ├── app.js            # Configuración Express
+│   │   └── server.js         # Punto de entrada del servidor
+│   ├── package.json          # Dependencias backend
+│   ├── .env                  # Variables de entorno (MONGO_URI, AUTH0)
+│   └── Dockerfile
+│
+├── DESIGN.md                 # Diseño del juego
+├── PLANNING.md               # Planificación del proyecto
+├── HISTORY.md                # Historial de cambios
+├── PISTAS.md                 # Ideas o pistas del juego
+├── README.md                 # Documentación principal
+└── .gitignore
+
 ```
 
 ---
@@ -92,6 +120,8 @@ El juego no tiene un "fin" tradicional — es una experiencia narrativa de explo
 - Express.js: Framework para Node.js que simplifica su uso.
 
 - Mongoose: Actua como intermediario entre Express y MongoDB, facilitando la conexión y gestión de datos con MongoDB.
+
+- Axios: Herramienta para conectar el frontend con el backend y con los servicios externos.
 
 ---
 

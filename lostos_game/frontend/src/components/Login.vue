@@ -1,0 +1,145 @@
+<template>
+  <div class="login-container">
+    <div class="login-box">
+      <h1>LostOS</h1>
+      <p class="subtitle">Acceso restringido</p>
+
+      <div v-if="isLoading" class="loading">
+        <p>Cargando...</p>
+      </div>
+
+      <template v-else>
+        <button v-if="!isAuthenticated" @click="loginWithRedirect" class="btn-login">
+          Iniciar sesión
+        </button>
+
+        <div v-else class="user-info">
+          <p>¡Bienvenido!</p>
+          <p class="user-email">{{ user?.email }}</p>
+          <button @click="logout" class="btn-logout">Cerrar sesión</button>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { watch } from 'vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+
+const emit = defineEmits(['authenticated']);
+
+const { loginWithRedirect, logout, isAuthenticated, user, isLoading, getAccessTokenSilently } = useAuth0();
+
+async function notifyBackendLogin() {
+  try {
+    const token = await getAccessTokenSilently();
+
+    const res = await fetch('http://localhost:3000/api/login', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    console.log('✅ Respuesta del backend:', data);
+  } catch (error) {
+    console.error('❌ Error al notificar login al backend:', error);
+  }
+}
+
+watch(
+  [isAuthenticated, isLoading],
+  async ([authenticated, loading]) => {
+    if (!loading && authenticated) {
+      await notifyBackendLogin();
+      emit('authenticated');
+    }
+  },
+  { immediate: true }
+);
+</script>
+
+<style scoped>
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  font-family: 'Courier New', monospace;
+}
+
+.login-box {
+  background: #0f3460;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  border: 1px solid #e94560;
+  max-width: 400px;
+  width: 100%;
+}
+
+h1 {
+  color: #e94560;
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+}
+
+.subtitle {
+  color: #00d4ff;
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+.btn-login,
+.btn-logout {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: #e94560;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-login:hover {
+  background: #ff5a7a;
+  box-shadow: 0 0 20px rgba(233, 69, 96, 0.8);
+}
+
+.btn-logout {
+  background: #ff6b6b;
+  margin-top: 0.5rem;
+}
+
+.btn-logout:hover {
+  background: #ff8787;
+}
+
+.user-info {
+  color: #00d4ff;
+  margin-top: 1rem;
+}
+
+.user-email {
+  color: #e94560;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.loading {
+  color: #00d4ff;
+  margin-top: 1rem;
+}
+</style>

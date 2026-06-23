@@ -58,13 +58,13 @@
 ## Semana 5: Agregar autenticación y progreso (16 Jun - 23 Jun)
 - Objetivo : lograr login con terceros funcionando y progreso persistente.
 
-- [ ] Configurar Auth0 en el backend con Express.js.
+- [x] Configurar Auth0 en el backend con Express.js.
 
 - [ ] Crear endpoints /login y /progress.
 
 - [ ] Guardar progreso en MongoDB (usuario, minijuegos completados, tiempo).
 
-- [ ] Integrar login en frontend Vue.
+- [x] Integrar login en frontend Vue.
 
 ## Semana 6: Agregar tutorial y minijuegos (23 Jun - 25 Jun)
 - Objetivo : agregar tutorial visible al inicio + nuevos minijuegos jugables.
