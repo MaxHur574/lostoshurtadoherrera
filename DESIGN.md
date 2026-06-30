@@ -17,35 +17,21 @@ LostOs_proyect/
 ├── frontend/                 # Aplicación cliente con Vue
 │   ├── public/               # Archivos estáticos (favicon, index.html)
 │   ├── src/
-│       ├── tests/
-│       │    
-│   │   ├── App.vue           # Componente raíz
-│   │   ├── main.js           # Entry point Vue
+│   |   ├── tests/  
 │   │   ├── components/       # Componentes .vue
 │   │   ├── store/            # Estado global (Pinia)
 │   │   └── assets/
-│   │       ├── images/       # Imágenes del juego
-│   │       └── audios/       # Sonidos
-│   ├── vite.config.js        # Configuración Vite
-│   ├── package.json          # Dependencias frontend
-│   ├── pnpm-lock.yaml
 │   └── Dockerfile
 │
 ├── backend/                  # Servidor con Node/Express
 │   ├── src/
 │   │   ├── config/           # Configuración (MongoDB, Auth0, env)
-│   │   │   ├── db.js
-│   │   │   └── auth.js
 │   │   ├── models/           # Esquemas Mongoose (User, Game, Score)
 │   │   ├── controllers/      # Lógica de negocio
 │   │   ├── routes/           # Endpoints Express
 │   │   ├── middleware/       # Autenticación, validaciones, errores
 │   │   ├── services/         # Axios y servicios externos
 │   │   ├── utils/            # Helpers y funciones comunes
-│   │   ├── app.js            # Configuración Express
-│   │   └── server.js         # Punto de entrada del servidor
-│   ├── package.json          # Dependencias backend
-│   ├── .env                  # Variables de entorno (MONGO_URI, AUTH0)
 │   └── Dockerfile
 │
 ├── DESIGN.md                 # Diseño del juego
@@ -110,6 +96,16 @@ El juego no tiene un "fin" tradicional — es una experiencia narrativa de explo
 ---
 
 ## Arquitectura fullstack
+
+### Frontend
+
+- Pinia: Es la biblioteca oficial para gestionar estado de Vue. Pinia tine una estructura mas simple y flexible que Vuex 5, además ocupa typescript de forma nativa, a diferencia de Vuex que originalmente se diseñó para JavaScript y luego se agregó TypeScript.
+  
+- GSAP: Sirve para poder hacer las animaciones como gliych u otras, con la ventaja de que nos deja realizar Timelines.
+  
+- Interact: Permite el Drag y Drop, resize, ya que algunas librerias como Draggable y Sortable no permiten el Drag y Drop (Mover libremente una ventana) y para el tipo de juego que queremos hacer Interact nos da más funciones para más realismo.
+  
+  
 ### Backend 
 - Auth0: Autenticacion de tokens para login con terceros.
 
