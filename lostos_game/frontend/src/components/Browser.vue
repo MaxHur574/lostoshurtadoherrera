@@ -4,7 +4,13 @@
     @close="$emit('close')"
     @minimize="$emit('minimize')"
   >
-    <div class="browser">
+    <!-- Gate: minijuego de red -->
+    <div v-if="!systemStore.flags.browserUnlocked" class="browser-gate">
+      <NetworkMinigame @complete="onNetworkComplete" />
+    </div>
+
+    <!-- Browser normal -->
+    <div v-else class="browser">
       <!-- Barra de navegación -->
       <div class="nav-bar">
         <button
@@ -133,11 +139,24 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import Window from "./Window.vue";
+import NetworkMinigame from "./minigames/NetworkMinigame.vue";
+import { useSystem } from "../store/system";
+import { useMinigames } from "../store/minigames";
 
 defineEmits(["close", "minimize"]);
 
+const systemStore    = useSystem();
+const minigamesStore = useMinigames();
+
+// ── Gate ─────────────────────────────────────────────────────────────────────
+function onNetworkComplete() {
+  minigamesStore.unlock("NetworkMinigame");
+  systemStore.setFlag("browserUnlocked");
+}
+
+// ── Refs ──────────────────────────────────────────────────────────────────────
 const urlInput = ref(null);
-const loading = ref(false);
+const loading  = ref(false);
 let tabCounter = 2;
 
 // ── Historial narrativo ───────────────────────────────────────────────────────
@@ -193,7 +212,6 @@ const pages = {
     url: "about:blank",
   },
 
-  // ── Nivel 1: Recuperación de cuenta ──
   "lost.sys/cache/recuperacion": {
     id: "recuperacion",
     title: "Recuperación de cuenta — lost.sys",
@@ -219,7 +237,7 @@ const pages = {
           <div style="color:#555;font-size:11px;margin-bottom:10px;">PISTA DE CONTRASEÑA</div>
           <div style="color:#666;font-size:12px;line-height:1.8;">
             La contraseña fue definida por el usuario.<br/>
-            <span style="color:#444;">Pista:</span> <span style="color:#777;font-style:italic;">nombre </span><br/>
+            <span style="color:#444;">Pista:</span> <span style="color:#777;font-style:italic;">nombre + número habitual</span><br/>
             <span style="color:#333;font-size:11px;">(El sistema no puede mostrar contraseñas por seguridad.)</span>
           </div>
         </div>
@@ -232,7 +250,6 @@ const pages = {
     `,
   },
 
-  // ── Nivel 4: Mercado Rojo ──
   "lost.sys/cache/mercadorojo": {
     id: "mercadorojo",
     title: "mercadorojo.onion — Caché local",
@@ -283,7 +300,7 @@ const tabs = ref([
 const currentTabId = ref(1);
 const historyStack = ref(["newtab"]);
 const forwardStack = ref([]);
-const urlValue = ref("");
+const urlValue     = ref("");
 
 const currentPage = computed(() => {
   const tab = tabs.value.find((t) => t.id === currentTabId.value);
@@ -309,14 +326,13 @@ function navigate(url) {
     if (pages[key]) {
       setPage(key);
     } else {
-      // Cualquier URL externa → sin conexión
       const errKey = "__err__" + url;
       if (!pages[errKey]) pages[errKey] = { id: "error", url, error: true };
       const tab = tabs.value.find((t) => t.id === currentTabId.value);
       if (tab) {
         tab.pageId = errKey;
-        tab.title = "Sin conexión";
-        tab.icon = "⚠️";
+        tab.title  = "Sin conexión";
+        tab.icon   = "⚠️";
       }
     }
   }, 500);
@@ -330,8 +346,8 @@ function setPage(pageId) {
   tab.pageId = pageId;
   const page = pages[pageId];
   if (page) {
-    tab.title = page.title || "Nueva pestaña";
-    tab.icon = page.icon || "🌐";
+    tab.title      = page.title || "Nueva pestaña";
+    tab.icon       = page.icon  || "🌐";
     urlValue.value = page.url === "about:blank" ? "" : page.url || "";
   }
 }
@@ -341,13 +357,13 @@ function goBack() {
   const current = historyStack.value.pop();
   forwardStack.value.push(current);
   const prev = historyStack.value[historyStack.value.length - 1];
-  const tab = tabs.value.find((t) => t.id === currentTabId.value);
+  const tab  = tabs.value.find((t) => t.id === currentTabId.value);
   if (tab && prev) {
     tab.pageId = prev;
     const page = pages[prev];
     if (page) {
-      tab.title = page.title;
-      tab.icon = page.icon;
+      tab.title      = page.title;
+      tab.icon       = page.icon;
       urlValue.value = page.url === "about:blank" ? "" : page.url;
     }
   }
@@ -362,8 +378,8 @@ function goForward() {
     tab.pageId = next;
     const page = pages[next];
     if (page) {
-      tab.title = page.title;
-      tab.icon = page.icon;
+      tab.title      = page.title;
+      tab.icon       = page.icon;
       urlValue.value = page.url === "about:blank" ? "" : page.url;
     }
   }
@@ -376,20 +392,20 @@ function reload() {
 function newTab() {
   tabCounter++;
   tabs.value.push({
-    id: tabCounter,
-    title: "Nueva pestaña",
-    icon: "🌐",
+    id:     tabCounter,
+    title:  "Nueva pestaña",
+    icon:   "🌐",
     pageId: "newtab",
   });
   currentTabId.value = tabCounter;
   historyStack.value = ["newtab"];
   forwardStack.value = [];
-  urlValue.value = "";
+  urlValue.value     = "";
 }
 
 function switchTab(id) {
   currentTabId.value = id;
-  const tab = tabs.value.find((t) => t.id === id);
+  const tab  = tabs.value.find((t) => t.id === id);
   const page = tab ? pages[tab.pageId] : null;
   urlValue.value = page?.url === "about:blank" ? "" : page?.url || "";
 }
@@ -404,6 +420,17 @@ function closeTab(id) {
 </script>
 
 <style scoped>
+/* ── Gate ── */
+.browser-gate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #07152a;
+  min-height: 500px;
+}
+
+/* ── Contenedor ── */
 .browser {
   display: flex;
   flex-direction: column;
@@ -444,9 +471,7 @@ function closeTab(id) {
   opacity: 0.3;
   cursor: default;
 }
-.go-btn {
-  font-size: 12px;
-}
+.go-btn { font-size: 12px; }
 .url-bar {
   flex: 1;
   display: flex;
@@ -458,12 +483,8 @@ function closeTab(id) {
   padding: 0 8px;
   height: 26px;
 }
-.url-bar:focus-within {
-  border-color: #555;
-}
-.url-bar.error {
-  border-color: #5a2a2a;
-}
+.url-bar:focus-within { border-color: #555; }
+.url-bar.error        { border-color: #5a2a2a; }
 .url-icon {
   font-size: 11px;
   opacity: 0.6;
@@ -503,15 +524,8 @@ function closeTab(id) {
   transition: background 0.15s;
   flex-shrink: 0;
 }
-.tab:hover {
-  background: #1a1a1a;
-  color: #aaa;
-}
-.tab.active {
-  background: #0d0d0d;
-  color: #ccc;
-  border-bottom: 2px solid #4a9eff;
-}
+.tab:hover          { background: #1a1a1a; color: #aaa; }
+.tab.active         { background: #0d0d0d; color: #ccc; border-bottom: 2px solid #4a9eff; }
 .tab-label {
   flex: 1;
   overflow: hidden;
@@ -529,10 +543,7 @@ function closeTab(id) {
   transition: background 0.15s;
   flex-shrink: 0;
 }
-.tab-close:hover {
-  background: #2a2a2a;
-  color: #ff6666;
-}
+.tab-close:hover    { background: #2a2a2a; color: #ff6666; }
 .new-tab-btn {
   background: none;
   border: none;
@@ -544,15 +555,10 @@ function closeTab(id) {
   transition: color 0.15s;
   flex-shrink: 0;
 }
-.new-tab-btn:hover {
-  color: #aaa;
-}
+.new-tab-btn:hover  { color: #aaa; }
 
 /* Contenido */
-.browser-content {
-  flex: 1;
-  overflow-y: auto;
-}
+.browser-content { flex: 1; overflow-y: auto; }
 
 /* Nueva pestaña */
 .new-tab-page {
@@ -573,12 +579,7 @@ function closeTab(id) {
   font-family: "Courier New", monospace;
   margin-top: -14px;
 }
-
-.nt-section {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.nt-section         { display: flex; flex-direction: column; gap: 6px; }
 .nt-title {
   font-size: 10px;
   color: #333;
@@ -586,7 +587,6 @@ function closeTab(id) {
   letter-spacing: 1px;
   margin-bottom: 4px;
 }
-
 .history-item {
   display: flex;
   align-items: center;
@@ -598,19 +598,9 @@ function closeTab(id) {
   cursor: pointer;
   transition: background 0.15s;
 }
-.history-item:hover {
-  background: #161616;
-  border-color: #2a2a2a;
-}
-.h-icon {
-  font-size: 13px;
-  flex-shrink: 0;
-  opacity: 0.5;
-}
-.h-info {
-  flex: 1;
-  overflow: hidden;
-}
+.history-item:hover { background: #161616; border-color: #2a2a2a; }
+.h-icon             { font-size: 13px; flex-shrink: 0; opacity: 0.5; }
+.h-info             { flex: 1; overflow: hidden; }
 .h-label {
   font-size: 12px;
   color: #555;
@@ -618,21 +608,9 @@ function closeTab(id) {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.h-url {
-  font-size: 10px;
-  color: #2a2a2a;
-  font-family: "Courier New", monospace;
-}
-.h-date {
-  font-size: 10px;
-  color: #2a2a2a;
-  flex-shrink: 0;
-}
-
-.quick-links {
-  display: flex;
-  gap: 8px;
-}
+.h-url              { font-size: 10px; color: #2a2a2a; font-family: "Courier New", monospace; }
+.h-date             { font-size: 10px; color: #2a2a2a; flex-shrink: 0; }
+.quick-links        { display: flex; gap: 8px; }
 .quick-link {
   display: flex;
   flex-direction: column;
@@ -646,19 +624,9 @@ function closeTab(id) {
   transition: background 0.15s;
   min-width: 80px;
 }
-.quick-link:hover {
-  background: #161616;
-  border-color: #2a2a2a;
-}
-.quick-link-icon {
-  font-size: 22px;
-}
-.quick-link-label {
-  font-size: 10px;
-  color: #555;
-  text-align: center;
-  line-height: 1.3;
-}
+.quick-link:hover   { background: #161616; border-color: #2a2a2a; }
+.quick-link-icon    { font-size: 22px; }
+.quick-link-label   { font-size: 10px; color: #555; text-align: center; line-height: 1.3; }
 
 /* Error */
 .error-page {
@@ -672,28 +640,11 @@ function closeTab(id) {
   text-align: center;
   padding: 20px;
 }
-.error-icon {
-  font-size: 40px;
-}
-.error-title {
-  font-size: 18px;
-  color: #888;
-  font-weight: bold;
-}
-.error-msg {
-  font-size: 13px;
-  color: #555;
-}
-.error-msg b {
-  color: #777;
-  font-weight: normal;
-}
-.error-detail {
-  font-size: 12px;
-  color: #444;
-  max-width: 300px;
-  line-height: 1.6;
-}
+.error-icon         { font-size: 40px; }
+.error-title        { font-size: 18px; color: #888; font-weight: bold; }
+.error-msg          { font-size: 13px; color: #555; }
+.error-msg b        { color: #777; font-weight: normal; }
+.error-detail       { font-size: 12px; color: #444; max-width: 300px; line-height: 1.6; }
 .error-retry {
   margin-top: 8px;
   background: #1a1a1a;
@@ -704,35 +655,14 @@ function closeTab(id) {
   cursor: pointer;
   font-size: 13px;
 }
-.error-retry:hover {
-  background: #222;
-  color: #ccc;
-}
+.error-retry:hover  { background: #222; color: #ccc; }
 
 /* Site */
-.site-page {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-.site-header {
-  padding: 10px 16px;
-  border-bottom: 1px solid #1a1a1a;
-}
-.site-title {
-  font-size: 13px;
-  color: #aaa;
-  font-weight: bold;
-}
-.site-url-display {
-  font-size: 11px;
-  color: #555;
-  font-family: "Courier New", monospace;
-}
-.site-body {
-  flex: 1;
-  overflow-y: auto;
-}
+.site-page          { display: flex; flex-direction: column; height: 100%; }
+.site-header        { padding: 10px 16px; border-bottom: 1px solid #1a1a1a; }
+.site-title         { font-size: 13px; color: #aaa; font-weight: bold; }
+.site-url-display   { font-size: 11px; color: #555; font-family: "Courier New", monospace; }
+.site-body          { flex: 1; overflow-y: auto; }
 
 /* Status */
 .status-bar {
@@ -750,15 +680,8 @@ function closeTab(id) {
   animation: pulse 1s infinite;
 }
 @keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
 }
-.status-right {
-  color: #2a2a2a;
-}
+.status-right { color: #2a2a2a; }
 </style>

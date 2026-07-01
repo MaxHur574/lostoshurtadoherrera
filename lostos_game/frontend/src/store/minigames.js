@@ -6,6 +6,7 @@ export const useMinigames = defineStore("minigames", () => {
     Pista_1: false,
     Pista_2: false,
     Pista_3: false,
+    NetworkMinigame: false,
   });
 
   function unlock(key) {

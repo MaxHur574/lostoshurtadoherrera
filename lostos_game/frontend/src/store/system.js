@@ -2,9 +2,9 @@ import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 
 export const PASSWORDS = {
-  investigacion_privada: "Luna14",
+  investigacion_privada: "Luna",
   mail_user: "vherrera.mail",
-  mail_pass: "Luna",
+  mail_pass: "Luna14",
   galeria_creador: "0314",
 };
 
@@ -28,6 +28,8 @@ const INITIAL_FLAGS = {
   // ── Legado ──
   bootRead: false,
   logErrorRead: false,
+
+  browserUnlocked: false,
 };
 
 export const useSystem = defineStore("system", () => {
@@ -190,6 +192,18 @@ export const useSystem = defineStore("system", () => {
     },
     { deep: true },
   );
+
+  watch(
+  () => flags.value.browserUnlocked,
+  (v) => {
+    if (!v) return;
+    triggerEvent("glitch", { intensity: "medium", duration: 800 });
+    triggerEvent("sound", { clip: "unlock_horror", volume: 0.4 });
+    triggerEvent("notification", {
+      message: "Conexión de red restaurada. Navegador accesible.",
+    });
+  },
+);
 
   return {
     openApps,
