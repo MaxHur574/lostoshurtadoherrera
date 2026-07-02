@@ -9,6 +9,7 @@ import Gallery from "./components/Gallery.vue";
 import TitleScreen from "./components/TitleScreen.vue";
 import VaultLoader from "./components/VaultLoader.vue";
 import Decryptor from "./components/Decryptor.vue";
+import TutorialOverlay from "./components/TutorialOverlay.vue";
 import { useSystem } from "./store/system.js";
 import { useAudio } from "./store/audio.js";
 import EndgameSequence from "./components/Vaultendgame.vue";
@@ -34,6 +35,14 @@ const showNotes = ref(false);
 const showGallery = ref(false);
 const showDecryptor = ref(false);
 const showEndgame = ref(false);
+
+// ── Tutorial ──────────────────────────────────────────────────────────────────
+const showTutorial = ref(false);
+
+function finishTutorial() {
+  showTutorial.value = false;
+  system.setFlag("tutorialSeen");
+}
 
 // ── Iconos del escritorio ─────────────────────────────────────────────────────
 const baseDesktopIcons = [
@@ -281,6 +290,13 @@ watch(stage, (v) => {
     scheduleGlitch();
     scheduleAlerts();
     audio.startDesktopMusic?.();
+
+    // Mostrar tutorial solo la primera vez
+    if (!system.flags.tutorialSeen) {
+      setTimeout(() => {
+        showTutorial.value = true;
+      }, 600);
+    }
   }
 });
 
@@ -396,7 +412,11 @@ onUnmounted(() => {
         @open-gallery="openApp('gallery')"
         @minimize-app="minimizeApp"
         @restore-app="restoreApp"
+        @open-tutorial="showTutorial = true"
       />
+
+      <!-- Tutorial interactivo -->
+      <TutorialOverlay v-if="showTutorial" @finish="finishTutorial" />
 
       <!-- Alerta de sistema -->
       <Transition name="sys-alert">

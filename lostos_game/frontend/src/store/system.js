@@ -30,6 +30,9 @@ const INITIAL_FLAGS = {
   logErrorRead: false,
 
   browserUnlocked: false,
+
+  // ── Tutorial ──
+  tutorialSeen: false,
 };
 
 export const useSystem = defineStore("system", () => {
@@ -194,16 +197,16 @@ export const useSystem = defineStore("system", () => {
   );
 
   watch(
-  () => flags.value.browserUnlocked,
-  (v) => {
-    if (!v) return;
-    triggerEvent("glitch", { intensity: "medium", duration: 800 });
-    triggerEvent("sound", { clip: "unlock_horror", volume: 0.4 });
-    triggerEvent("notification", {
-      message: "Conexión de red restaurada. Navegador accesible.",
-    });
-  },
-);
+    () => flags.value.browserUnlocked,
+    (v) => {
+      if (!v) return;
+      triggerEvent("glitch", { intensity: "medium", duration: 800 });
+      triggerEvent("sound", { clip: "unlock_horror", volume: 0.4 });
+      triggerEvent("notification", {
+        message: "Conexión de red restaurada. Navegador accesible.",
+      });
+    },
+  );
 
   return {
     openApps,
