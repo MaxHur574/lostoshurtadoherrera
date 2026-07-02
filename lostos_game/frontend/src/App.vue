@@ -13,14 +13,17 @@ import { useSystem } from "./store/system.js";
 import { useAudio } from "./store/audio.js";
 import EndgameSequence from "./components/Vaultendgame.vue";
 import Login from "./components/Login.vue";
+import { useProgress } from "./composables/useProgress.js";
 
 const audio = useAudio();
 const system = useSystem();
-
+const progress = useProgress();
 const stage = ref("login"); // En lugar de "title"
 
-const handleAuthenticated = () => {
-  stage.value = "title"; // Pasar a pantalla de título
+const handleAuthenticated = async () => {
+  await progress.loadProgress();   // trae flags + minijuegos guardados
+  progress.startAutosave();        // desde ahora, cualquier cambio se autoguarda
+  stage.value = "title";
 };
 
 
