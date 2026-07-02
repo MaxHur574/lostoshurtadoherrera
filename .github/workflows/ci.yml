@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: pnpm
           cache-dependency-path: lostos_game/frontend/pnpm-lock.yaml
 
@@ -48,7 +48,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: pnpm
           cache-dependency-path: lostos_game/frontend/pnpm-lock.yaml
 
